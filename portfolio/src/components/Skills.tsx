@@ -1,12 +1,16 @@
 import { skills } from '../data'
 import { CameraIcon, VideoIcon } from './CameraIcon'
 import { CornerSplash } from './InkSplatter'
+import { useInView } from '../hooks/useInView'
 
 export function Skills() {
+  const { ref, visible } = useInView<HTMLDivElement>()
+
   return (
     <section id="skills" className="section section--tinted">
-      <CornerSplash position="skills" color="blue" size={280} />
-      <div className="section__inner">
+      <CornerSplash position="skills" color="blue" size={360} wipe="horizontal" delay="1.8s" />
+      <CornerSplash position="skills-alt" color="orange" size={200} wipe="vertical" delay="5.2s" />
+      <div ref={ref} className={`section__inner fade-scroll${visible ? ' fade-scroll--visible' : ''}`}>
         <h2 className="section__title">
           <span className="section__title-accent">Skills</span> スキル
         </h2>

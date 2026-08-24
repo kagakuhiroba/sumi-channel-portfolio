@@ -125,33 +125,193 @@ ul {
 }
 
 .corner-splash--about {
-  bottom: -110px;
-  right: -120px;
+  bottom: -140px;
+  right: -155px;
+}
+
+.corner-splash--about-alt {
+  bottom: -55px;
+  left: -55px;
 }
 
 .corner-splash--skills {
-  bottom: -120px;
-  left: -140px;
+  bottom: -155px;
+  left: -175px;
+}
+
+.corner-splash--skills-alt {
+  bottom: -60px;
+  right: -60px;
 }
 
 .corner-splash--works {
-  bottom: -110px;
-  right: -130px;
+  bottom: -140px;
+  right: -165px;
+}
+
+.corner-splash--works-alt {
+  bottom: -55px;
+  left: -55px;
 }
 
 .corner-splash--contact {
-  bottom: -110px;
-  left: -130px;
+  bottom: -140px;
+  left: -165px;
+}
+
+.corner-splash--contact-alt {
+  bottom: -55px;
+  right: -55px;
 }
 
 .corner-splash--hero-tl {
-  top: -120px;
-  left: -120px;
+  top: -150px;
+  left: -150px;
 }
 
 .corner-splash--hero-br {
-  bottom: -120px;
-  right: -120px;
+  bottom: -150px;
+  right: -150px;
+}
+
+.corner-splash--hero-tr {
+  top: -70px;
+  right: -70px;
+}
+
+.corner-splash--hero-bl {
+  bottom: -70px;
+  left: -70px;
+}
+
+/* Ink splatter → brush wipe → re-splatter loop */
+@media (prefers-reduced-motion: no-preference) {
+  .corner-splash--wipe-horizontal {
+    animation-name: ink-cycle-horizontal;
+  }
+
+  .corner-splash--wipe-vertical {
+    animation-name: ink-cycle-vertical;
+  }
+
+  .corner-splash {
+    animation-duration: 7s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+
+  .hero__eyebrow {
+    opacity: 0;
+    animation: hero-fade-in 0.6s ease-out 0.9s forwards;
+  }
+
+  .hero__title {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.8s, transform 0.8s;
+  }
+
+  .hero__title--visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .hero__lead {
+    opacity: 0;
+    animation: hero-fade-in 0.6s ease-out 1.3s forwards;
+  }
+
+  .hero__actions {
+    opacity: 0;
+    animation: hero-fade-in 0.6s ease-out 1.45s forwards;
+  }
+
+  .hero__badges {
+    opacity: 0;
+    animation: hero-fade-in 0.6s ease-out 1.6s forwards;
+  }
+
+  .fade-scroll {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s, transform 0.7s;
+  }
+
+  .fade-scroll--visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ink-cycle-horizontal {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+    clip-path: inset(0 0 0 0);
+  }
+  8% {
+    opacity: 1;
+    transform: scale(1.1);
+    clip-path: inset(0 0 0 0);
+  }
+  14%,
+  60% {
+    opacity: 1;
+    transform: scale(1);
+    clip-path: inset(0 0 0 0);
+  }
+  72% {
+    opacity: 1;
+    transform: scale(1);
+    clip-path: inset(0 0 0 100%);
+  }
+  76%,
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+    clip-path: inset(0 0 0 100%);
+  }
+}
+
+@keyframes ink-cycle-vertical {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+    clip-path: inset(0 0 0 0);
+  }
+  8% {
+    opacity: 1;
+    transform: scale(1.1);
+    clip-path: inset(0 0 0 0);
+  }
+  14%,
+  60% {
+    opacity: 1;
+    transform: scale(1);
+    clip-path: inset(0 0 0 0);
+  }
+  72% {
+    opacity: 1;
+    transform: scale(1);
+    clip-path: inset(0 100% 0 0);
+  }
+  76%,
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+    clip-path: inset(0 100% 0 0);
+  }
 }
 
 .hero__content {
@@ -601,5 +761,35 @@ ul {
   .corner-splash--contact {
     bottom: -60px;
     left: -70px;
+  }
+
+  .corner-splash--hero-tr {
+    top: -45px;
+    right: -45px;
+  }
+
+  .corner-splash--hero-bl {
+    bottom: -45px;
+    left: -45px;
+  }
+
+  .corner-splash--about-alt {
+    bottom: -45px;
+    left: -45px;
+  }
+
+  .corner-splash--skills-alt {
+    bottom: -45px;
+    right: -45px;
+  }
+
+  .corner-splash--works-alt {
+    bottom: -45px;
+    left: -45px;
+  }
+
+  .corner-splash--contact-alt {
+    bottom: -45px;
+    right: -45px;
   }
 }

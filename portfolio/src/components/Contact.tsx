@@ -1,4 +1,5 @@
 import { CornerSplash } from './InkSplatter'
+import { useInView } from '../hooks/useInView'
 
 const SNS_LINKS = [
   { label: 'X (Twitter)', href: 'https://x.com/' },
@@ -7,10 +8,13 @@ const SNS_LINKS = [
 ]
 
 export function Contact() {
+  const { ref, visible } = useInView<HTMLDivElement>()
+
   return (
     <section id="contact" className="section section--tinted">
-      <CornerSplash position="contact" color="orange" size={260} />
-      <div className="section__inner contact">
+      <CornerSplash position="contact" color="orange" size={340} wipe="horizontal" delay="3.6s" />
+      <CornerSplash position="contact-alt" color="blue" size={190} wipe="vertical" delay="0.2s" />
+      <div ref={ref} className={`section__inner contact fade-scroll${visible ? ' fade-scroll--visible' : ''}`}>
         <h2 className="section__title">
           <span className="section__title-accent">Contact</span> お問い合わせ
         </h2>
