@@ -6,8 +6,9 @@ export function About() {
 
   return (
     <section id="about" className="section">
-      <CornerSplash position="about" color="orange" size={340} wipe="horizontal" delay="0.6s" />
-      <CornerSplash position="about-alt" color="blue" size={190} wipe="vertical" delay="4.1s" />
+      <CornerSplash position="about" color="orange" size={460} />
+      <CornerSplash position="about-alt" color="blue" size={260} />
+      <CornerSplash position="about-top" color="blue" size={220} />
       <div ref={ref} className={`section__inner about fade-scroll${visible ? ' fade-scroll--visible' : ''}`}>
         <div className="about__portrait" aria-hidden="true">
           <span>sumi</span>

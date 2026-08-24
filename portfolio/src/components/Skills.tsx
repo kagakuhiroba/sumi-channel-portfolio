@@ -8,8 +8,9 @@ export function Skills() {
 
   return (
     <section id="skills" className="section section--tinted">
-      <CornerSplash position="skills" color="blue" size={360} wipe="horizontal" delay="1.8s" />
-      <CornerSplash position="skills-alt" color="orange" size={200} wipe="vertical" delay="5.2s" />
+      <CornerSplash position="skills" color="blue" size={480} />
+      <CornerSplash position="skills-alt" color="orange" size={270} />
+      <CornerSplash position="skills-top" color="orange" size={230} />
       <div ref={ref} className={`section__inner fade-scroll${visible ? ' fade-scroll--visible' : ''}`}>
         <h2 className="section__title">
           <span className="section__title-accent">Skills</span> スキル

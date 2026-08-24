@@ -134,6 +134,11 @@ ul {
   left: -55px;
 }
 
+.corner-splash--about-top {
+  top: -80px;
+  left: 30%;
+}
+
 .corner-splash--skills {
   bottom: -155px;
   left: -175px;
@@ -141,6 +146,11 @@ ul {
 
 .corner-splash--skills-alt {
   bottom: -60px;
+  right: -60px;
+}
+
+.corner-splash--skills-top {
+  top: -75px;
   right: -60px;
 }
 
@@ -154,6 +164,11 @@ ul {
   left: -55px;
 }
 
+.corner-splash--works-top {
+  top: -75px;
+  left: -60px;
+}
+
 .corner-splash--contact {
   bottom: -140px;
   left: -165px;
@@ -161,6 +176,11 @@ ul {
 
 .corner-splash--contact-alt {
   bottom: -55px;
+  right: -55px;
+}
+
+.corner-splash--contact-top {
+  top: -75px;
   right: -55px;
 }
 
@@ -184,18 +204,22 @@ ul {
   left: -70px;
 }
 
-/* Ink splatter → brush wipe → re-splatter loop */
+.corner-splash--hero-top {
+  top: -100px;
+  left: 36%;
+}
+
+.corner-splash--hero-bottom {
+  bottom: -100px;
+  right: 30%;
+}
+
+/* Ink splatter → eraser wipe (top-left) → re-splatter loop, all in sync */
 @media (prefers-reduced-motion: no-preference) {
-  .corner-splash--wipe-horizontal {
-    animation-name: ink-cycle-horizontal;
-  }
-
-  .corner-splash--wipe-vertical {
-    animation-name: ink-cycle-vertical;
-  }
-
   .corner-splash {
+    animation-name: ink-cycle-diagonal;
     animation-duration: 7s;
+    animation-delay: 0s;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
   }
@@ -254,7 +278,7 @@ ul {
   }
 }
 
-@keyframes ink-cycle-horizontal {
+@keyframes ink-cycle-diagonal {
   0% {
     opacity: 0;
     transform: scale(0.5);
@@ -266,51 +290,21 @@ ul {
     clip-path: inset(0 0 0 0);
   }
   14%,
-  60% {
+  50% {
     opacity: 1;
     transform: scale(1);
     clip-path: inset(0 0 0 0);
   }
-  72% {
+  78% {
     opacity: 1;
     transform: scale(1);
-    clip-path: inset(0 0 0 100%);
+    clip-path: inset(100% 0 0 100%);
   }
-  76%,
+  82%,
   100% {
     opacity: 0;
     transform: scale(0.5);
-    clip-path: inset(0 0 0 100%);
-  }
-}
-
-@keyframes ink-cycle-vertical {
-  0% {
-    opacity: 0;
-    transform: scale(0.5);
-    clip-path: inset(0 0 0 0);
-  }
-  8% {
-    opacity: 1;
-    transform: scale(1.1);
-    clip-path: inset(0 0 0 0);
-  }
-  14%,
-  60% {
-    opacity: 1;
-    transform: scale(1);
-    clip-path: inset(0 0 0 0);
-  }
-  72% {
-    opacity: 1;
-    transform: scale(1);
-    clip-path: inset(0 100% 0 0);
-  }
-  76%,
-  100% {
-    opacity: 0;
-    transform: scale(0.5);
-    clip-path: inset(0 100% 0 0);
+    clip-path: inset(100% 0 0 100%);
   }
 }
 
@@ -729,67 +723,97 @@ ul {
   }
 
   .corner-splash {
-    width: 170px !important;
-    height: 170px !important;
+    width: 220px !important;
+    height: 220px !important;
   }
 
   .corner-splash--hero-tl {
-    top: -70px;
-    left: -70px;
+    top: -80px;
+    left: -80px;
   }
 
   .corner-splash--hero-br {
-    bottom: -70px;
-    right: -70px;
+    bottom: -80px;
+    right: -80px;
   }
 
   .corner-splash--about {
-    bottom: -60px;
-    right: -70px;
+    bottom: -70px;
+    right: -80px;
   }
 
   .corner-splash--skills {
+    bottom: -80px;
+    left: -90px;
+  }
+
+  .corner-splash--works {
+    bottom: -70px;
+    right: -80px;
+  }
+
+  .corner-splash--contact {
     bottom: -70px;
     left: -80px;
   }
 
-  .corner-splash--works {
-    bottom: -60px;
-    right: -70px;
-  }
-
-  .corner-splash--contact {
-    bottom: -60px;
-    left: -70px;
-  }
-
   .corner-splash--hero-tr {
-    top: -45px;
-    right: -45px;
+    top: -55px;
+    right: -55px;
   }
 
   .corner-splash--hero-bl {
-    bottom: -45px;
-    left: -45px;
+    bottom: -55px;
+    left: -55px;
+  }
+
+  .corner-splash--hero-top {
+    top: -60px;
+    left: 30%;
+  }
+
+  .corner-splash--hero-bottom {
+    bottom: -60px;
+    right: 24%;
   }
 
   .corner-splash--about-alt {
-    bottom: -45px;
-    left: -45px;
+    bottom: -55px;
+    left: -55px;
+  }
+
+  .corner-splash--about-top {
+    top: -55px;
+    left: 20%;
   }
 
   .corner-splash--skills-alt {
-    bottom: -45px;
-    right: -45px;
+    bottom: -55px;
+    right: -55px;
+  }
+
+  .corner-splash--skills-top {
+    top: -55px;
+    right: -50px;
   }
 
   .corner-splash--works-alt {
-    bottom: -45px;
-    left: -45px;
+    bottom: -55px;
+    left: -55px;
+  }
+
+  .corner-splash--works-top {
+    top: -55px;
+    left: -50px;
   }
 
   .corner-splash--contact-alt {
-    bottom: -45px;
+    bottom: -55px;
+    right: -55px;
+  }
+
+  .corner-splash--contact-top {
+    top: -55px;
     right: -45px;
   }
 }
