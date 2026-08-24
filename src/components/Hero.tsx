@@ -1,14 +1,19 @@
 import { CameraIcon, VideoIcon } from './CameraIcon'
 import { CornerSplash } from './InkSplatter'
+import { useInView } from '../hooks/useInView'
 
 export function Hero() {
+  const { ref, visible } = useInView<HTMLHeadingElement>()
+
   return (
     <section id="top" className="hero">
-      <CornerSplash position="hero-tl" color="blue" size={420} />
-      <CornerSplash position="hero-br" color="orange" size={420} />
+      <CornerSplash position="hero-tl" color="blue" size={540} wipe="horizontal" delay="0s" />
+      <CornerSplash position="hero-br" color="orange" size={540} wipe="horizontal" delay="2.3s" />
+      <CornerSplash position="hero-tr" color="orange" size={260} wipe="vertical" delay="1.1s" />
+      <CornerSplash position="hero-bl" color="blue" size={260} wipe="vertical" delay="3.4s" />
       <div className="hero__content">
         <p className="hero__eyebrow">Photographer / Videographer</p>
-        <h1 className="hero__title">
+        <h1 ref={ref} className={`hero__title${visible ? ' hero__title--visible' : ''}`}>
           <span className="hero__title-line hero__title-line--sumi">
             <span className="hero__title-part hero__title-part--su">su</span>
             <span className="hero__title-part hero__title-part--mi">mi</span>

@@ -2,9 +2,11 @@ import { useState } from 'react'
 import { workCategories, works, type WorkCategory } from '../data'
 import { CameraIcon, VideoIcon } from './CameraIcon'
 import { CornerSplash } from './InkSplatter'
+import { useInView } from '../hooks/useInView'
 
 export function Works() {
   const [activeCategory, setActiveCategory] = useState<WorkCategory>('すべて')
+  const { ref, visible } = useInView<HTMLDivElement>()
 
   const filteredWorks = works.filter(
     (work) => activeCategory === 'すべて' || work.category === activeCategory,
@@ -12,8 +14,9 @@ export function Works() {
 
   return (
     <section id="works" className="section">
-      <CornerSplash position="works" color="blue" size={260} />
-      <div className="section__inner">
+      <CornerSplash position="works" color="blue" size={340} wipe="horizontal" delay="2.9s" />
+      <CornerSplash position="works-alt" color="orange" size={190} wipe="vertical" delay="6.3s" />
+      <div ref={ref} className={`section__inner fade-scroll${visible ? ' fade-scroll--visible' : ''}`}>
         <h2 className="section__title">
           <span className="section__title-accent">Works</span> 作品・実績
         </h2>

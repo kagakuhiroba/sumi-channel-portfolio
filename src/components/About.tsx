@@ -1,10 +1,14 @@
 import { CornerSplash } from './InkSplatter'
+import { useInView } from '../hooks/useInView'
 
 export function About() {
+  const { ref, visible } = useInView<HTMLDivElement>()
+
   return (
     <section id="about" className="section">
-      <CornerSplash position="about" color="orange" size={260} />
-      <div className="section__inner about">
+      <CornerSplash position="about" color="orange" size={340} wipe="horizontal" delay="0.6s" />
+      <CornerSplash position="about-alt" color="blue" size={190} wipe="vertical" delay="4.1s" />
+      <div ref={ref} className={`section__inner about fade-scroll${visible ? ' fade-scroll--visible' : ''}`}>
         <div className="about__portrait" aria-hidden="true">
           <span>sumi</span>
         </div>
