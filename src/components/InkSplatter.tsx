@@ -70,26 +70,15 @@ type CornerSplashProps = {
   position: string
   color: 'blue' | 'orange'
   size?: number
-  wipe?: 'horizontal' | 'vertical'
-  delay?: string
-  duration?: string
 }
 
-export function CornerSplash({
-  position,
-  color,
-  size = 220,
-  wipe = 'horizontal',
-  delay = '0s',
-  duration = '7s',
-}: CornerSplashProps) {
+export function CornerSplash({ position, color, size = 220 }: CornerSplashProps) {
   return (
     <svg
-      className={`corner-splash corner-splash--${position} corner-splash--wipe-${wipe}`}
+      className={`corner-splash corner-splash--${position}`}
       width={size}
       height={size}
       viewBox="-145 -145 290 290"
-      style={{ animationDelay: delay, animationDuration: duration }}
       aria-hidden="true"
     >
       <InkSplash x={0} y={0} color={color} />
