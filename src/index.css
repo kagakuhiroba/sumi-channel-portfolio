@@ -122,6 +122,10 @@ ul {
   position: absolute;
   z-index: 0;
   pointer-events: none;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
 }
 
 .corner-splash--about {
@@ -282,66 +286,56 @@ ul {
   0% {
     opacity: 0;
     transform: scale(0.5);
-    clip-path: inset(0 0 0 0);
+    -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
+    mask-image: linear-gradient(135deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
   }
   8% {
     opacity: 1;
     transform: scale(1.1);
-    clip-path: inset(0 0 0 0);
+    -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
+    mask-image: linear-gradient(135deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
   }
   14%,
   50% {
     opacity: 1;
     transform: scale(1);
-    clip-path: inset(0 0 0 0);
+    -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
+    mask-image: linear-gradient(135deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
     animation-timing-function: cubic-bezier(0.6, 0, 0.9, 0.2);
   }
-  55% {
+  58% {
     opacity: 1;
     transform: scale(1);
-    clip-path: inset(6% 0 0 22%);
-    animation-timing-function: ease;
+    -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 14%, #fff 14%, #fff 100%);
+    mask-image: linear-gradient(135deg, transparent 0%, transparent 14%, #fff 14%, #fff 100%);
+    animation-timing-function: ease-in;
   }
-  59% {
+  66% {
     opacity: 1;
     transform: scale(1);
-    clip-path: inset(10% 0 0 26%);
-    animation-timing-function: cubic-bezier(0.2, 0.8, 0.4, 1);
-  }
-  64% {
-    opacity: 1;
-    transform: scale(1);
-    clip-path: inset(40% 0 0 34%);
-    animation-timing-function: cubic-bezier(0.7, 0, 0.85, 0.3);
-  }
-  68% {
-    opacity: 1;
-    transform: scale(1);
-    clip-path: inset(44% 0 0 60%);
+    -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 45%, #fff 45%, #fff 100%);
+    mask-image: linear-gradient(135deg, transparent 0%, transparent 45%, #fff 45%, #fff 100%);
     animation-timing-function: ease-in-out;
   }
-  73% {
+  74% {
     opacity: 1;
     transform: scale(1);
-    clip-path: inset(72% 0 0 65%);
-    animation-timing-function: cubic-bezier(0.3, 0.9, 0.5, 1);
-  }
-  77% {
-    opacity: 1;
-    transform: scale(1);
-    clip-path: inset(76% 0 0 92%);
-    animation-timing-function: cubic-bezier(0.8, 0, 0.95, 0.25);
+    -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 78%, #fff 78%, #fff 100%);
+    mask-image: linear-gradient(135deg, transparent 0%, transparent 78%, #fff 78%, #fff 100%);
+    animation-timing-function: ease-out;
   }
   80% {
     opacity: 1;
     transform: scale(1);
-    clip-path: inset(100% 0 0 100%);
+    -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 100%, #fff 100%, #fff 100%);
+    mask-image: linear-gradient(135deg, transparent 0%, transparent 100%, #fff 100%, #fff 100%);
   }
   84%,
   100% {
     opacity: 0;
     transform: scale(0.5);
-    clip-path: inset(100% 0 0 100%);
+    -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 100%, #fff 100%, #fff 100%);
+    mask-image: linear-gradient(135deg, transparent 0%, transparent 100%, #fff 100%, #fff 100%);
   }
 }
 
