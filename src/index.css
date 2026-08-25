@@ -285,55 +285,112 @@ ul {
 @keyframes ink-cycle-diagonal {
   0% {
     opacity: 0;
-    transform: scale(0.5);
+    transform: scale(0.5) rotate(0deg);
     -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
     mask-image: linear-gradient(135deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
   }
   8% {
     opacity: 1;
-    transform: scale(1.1);
+    transform: scale(1.1) rotate(0deg);
     -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
     mask-image: linear-gradient(135deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
   }
   14%,
   50% {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) rotate(0deg);
     -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
     mask-image: linear-gradient(135deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
     animation-timing-function: cubic-bezier(0.6, 0, 0.9, 0.2);
   }
-  58% {
+  /* Scrubbing wipe: a soft-edged band rocks back and forth (small retreats between
+     each forward stroke, like a hand rubbing) while net progress trends to fully erased. */
+  52% {
     opacity: 1;
-    transform: scale(1);
-    -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 14%, #fff 14%, #fff 100%);
-    mask-image: linear-gradient(135deg, transparent 0%, transparent 14%, #fff 14%, #fff 100%);
-    animation-timing-function: ease-in;
-  }
-  66% {
-    opacity: 1;
-    transform: scale(1);
-    -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 45%, #fff 45%, #fff 100%);
-    mask-image: linear-gradient(135deg, transparent 0%, transparent 45%, #fff 45%, #fff 100%);
+    transform: scale(1) rotate(-2deg);
+    -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 2%, #fff 14%, #fff 100%);
+    mask-image: linear-gradient(135deg, transparent 0%, transparent 2%, #fff 14%, #fff 100%);
     animation-timing-function: ease-in-out;
   }
-  74% {
+  55% {
     opacity: 1;
-    transform: scale(1);
-    -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 78%, #fff 78%, #fff 100%);
-    mask-image: linear-gradient(135deg, transparent 0%, transparent 78%, #fff 78%, #fff 100%);
+    transform: scale(1) rotate(2deg);
+    -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 0%, #fff 9%, #fff 100%);
+    mask-image: linear-gradient(135deg, transparent 0%, transparent 0%, #fff 9%, #fff 100%);
+    animation-timing-function: ease-in-out;
+  }
+  58% {
+    opacity: 1;
+    transform: scale(1) rotate(-2.5deg);
+    -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 14%, #fff 26%, #fff 100%);
+    mask-image: linear-gradient(135deg, transparent 0%, transparent 14%, #fff 26%, #fff 100%);
+    animation-timing-function: ease-in-out;
+  }
+  61% {
+    opacity: 1;
+    transform: scale(1) rotate(2deg);
+    -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 7%, #fff 19%, #fff 100%);
+    mask-image: linear-gradient(135deg, transparent 0%, transparent 7%, #fff 19%, #fff 100%);
+    animation-timing-function: ease-in-out;
+  }
+  64% {
+    opacity: 1;
+    transform: scale(1) rotate(-1.5deg);
+    -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 28%, #fff 40%, #fff 100%);
+    mask-image: linear-gradient(135deg, transparent 0%, transparent 28%, #fff 40%, #fff 100%);
+    animation-timing-function: ease-in-out;
+  }
+  67% {
+    opacity: 1;
+    transform: scale(1) rotate(1.5deg);
+    -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 19%, #fff 31%, #fff 100%);
+    mask-image: linear-gradient(135deg, transparent 0%, transparent 19%, #fff 31%, #fff 100%);
+    animation-timing-function: ease-in-out;
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1) rotate(-1deg);
+    -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 44%, #fff 56%, #fff 100%);
+    mask-image: linear-gradient(135deg, transparent 0%, transparent 44%, #fff 56%, #fff 100%);
+    animation-timing-function: ease-in-out;
+  }
+  73% {
+    opacity: 1;
+    transform: scale(1) rotate(1deg);
+    -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 34%, #fff 46%, #fff 100%);
+    mask-image: linear-gradient(135deg, transparent 0%, transparent 34%, #fff 46%, #fff 100%);
+    animation-timing-function: ease-in-out;
+  }
+  76% {
+    opacity: 1;
+    transform: scale(1) rotate(-0.8deg);
+    -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 64%, #fff 76%, #fff 100%);
+    mask-image: linear-gradient(135deg, transparent 0%, transparent 64%, #fff 76%, #fff 100%);
+    animation-timing-function: ease-in-out;
+  }
+  78% {
+    opacity: 1;
+    transform: scale(1) rotate(0.8deg);
+    -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 52%, #fff 64%, #fff 100%);
+    mask-image: linear-gradient(135deg, transparent 0%, transparent 52%, #fff 64%, #fff 100%);
     animation-timing-function: ease-out;
+  }
+  79.5% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 86%, #fff 98%, #fff 100%);
+    mask-image: linear-gradient(135deg, transparent 0%, transparent 86%, #fff 98%, #fff 100%);
   }
   80% {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) rotate(0deg);
     -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 100%, #fff 100%, #fff 100%);
     mask-image: linear-gradient(135deg, transparent 0%, transparent 100%, #fff 100%, #fff 100%);
   }
   84%,
   100% {
     opacity: 0;
-    transform: scale(0.5);
+    transform: scale(0.5) rotate(0deg);
     -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 100%, #fff 100%, #fff 100%);
     mask-image: linear-gradient(135deg, transparent 0%, transparent 100%, #fff 100%, #fff 100%);
   }
