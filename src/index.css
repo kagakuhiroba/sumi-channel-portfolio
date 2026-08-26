@@ -136,8 +136,36 @@ ul {
   mask-repeat: no-repeat;
   -webkit-mask-size: 100% 100%;
   mask-size: 100% 100%;
-  -webkit-mask-image: linear-gradient(140deg, transparent 0%, transparent var(--wipe), #fff var(--wipe));
-  mask-image: linear-gradient(140deg, transparent 0%, transparent var(--wipe), #fff var(--wipe));
+  -webkit-mask-image: linear-gradient(
+    140deg,
+    transparent 0%,
+    transparent calc(var(--wipe) - 6%),
+    #fff calc(var(--wipe) - 6%),
+    #fff calc(var(--wipe) - 3.5%),
+    transparent calc(var(--wipe) - 3.5%),
+    transparent calc(var(--wipe) - 2%),
+    #fff calc(var(--wipe) - 2%),
+    #fff calc(var(--wipe) + 0.5%),
+    transparent calc(var(--wipe) + 0.5%),
+    transparent calc(var(--wipe) + 3%),
+    #fff calc(var(--wipe) + 3%),
+    #fff 100%
+  );
+  mask-image: linear-gradient(
+    140deg,
+    transparent 0%,
+    transparent calc(var(--wipe) - 6%),
+    #fff calc(var(--wipe) - 6%),
+    #fff calc(var(--wipe) - 3.5%),
+    transparent calc(var(--wipe) - 3.5%),
+    transparent calc(var(--wipe) - 2%),
+    #fff calc(var(--wipe) - 2%),
+    #fff calc(var(--wipe) + 0.5%),
+    transparent calc(var(--wipe) + 0.5%),
+    transparent calc(var(--wipe) + 3%),
+    #fff calc(var(--wipe) + 3%),
+    #fff 100%
+  );
 }
 
 .corner-splash--about {
@@ -320,8 +348,8 @@ ul {
 
 /* The wipe erases from the upper-left in 3 stages, back to back with no pause between
    them — --wipe (registered above as a typed <percentage>, so browsers genuinely tween
-   it instead of snapping) drives the mask's hard edge (no feather/gradient at all) via
-   .corner-splash. Stage targets are tuned to the ink's actual ~35–90% footprint so each
+   it instead of snapping) drives the mask's hard-edged but ragged boundary (several
+   thin alternating bands right at the edge, no smooth blur) via .corner-splash. Stage targets are tuned to the ink's actual ~35–90% footprint so each
    stage visibly scrubs across real ink. Once fully erased it fades out and stays blank
    for exactly 0.7s (of the 5.9s cycle) before the loop wraps and the ink splats back in. */
 @keyframes ink-cycle-diagonal {
