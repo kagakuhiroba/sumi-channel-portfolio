@@ -10,6 +10,8 @@ export function About() {
       <CornerSplash position="about-alt" color="blue" size={280} variant="c" rotate={30} />
       <CornerSplash position="about-top" color="blue" size={195} variant="b" rotate={-40} />
       <CornerSplash position="about-text" color="orange" size={260} variant="b" rotate={8} />
+      <CornerSplash position="about-bottom" color="orange" size={200} variant="c" rotate={-25} />
+      <CornerSplash position="about-left" color="blue" size={170} variant="a" rotate={50} />
       <div ref={ref} className={`section__inner about fade-scroll${visible ? ' fade-scroll--visible' : ''}`}>
         <div className="about__portrait" aria-hidden="true">
           <span>sumi</span>

@@ -12,6 +12,8 @@ export function Skills() {
       <CornerSplash position="skills-alt" color="orange" size={250} variant="a" rotate={-25} />
       <CornerSplash position="skills-top" color="orange" size={205} variant="c" rotate={50} />
       <CornerSplash position="skills-mid" color="blue" size={240} variant="a" rotate={-15} />
+      <CornerSplash position="skills-bottom" color="orange" size={190} variant="b" rotate={35} />
+      <CornerSplash position="skills-right" color="blue" size={160} variant="c" rotate={-45} />
       <div ref={ref} className={`section__inner fade-scroll${visible ? ' fade-scroll--visible' : ''}`}>
         <h2 className="section__title">
           <span className="section__title-accent">Skills</span> スキル

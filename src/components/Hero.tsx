@@ -13,6 +13,8 @@ export function Hero() {
       <CornerSplash position="hero-bl" color="blue" size={380} variant="b" rotate={-22} />
       <CornerSplash position="hero-top" color="orange" size={230} variant="a" rotate={45} />
       <CornerSplash position="hero-bottom" color="blue" size={290} variant="c" rotate={-38} />
+      <CornerSplash position="hero-left" color="orange" size={210} variant="b" rotate={-30} />
+      <CornerSplash position="hero-right" color="blue" size={240} variant="c" rotate={40} />
       <div className="hero__content">
         <p className="hero__eyebrow">Photographer / Videographer</p>
         <h1 ref={ref} className={`hero__title${visible ? ' hero__title--visible' : ''}`}>

@@ -221,6 +221,17 @@ ul {
   opacity: 0.4;
 }
 
+.corner-splash--about-bottom {
+  bottom: 4%;
+  left: 38%;
+  opacity: 0.4;
+}
+
+.corner-splash--about-left {
+  top: 55%;
+  left: -50px;
+}
+
 .corner-splash--skills {
   bottom: -155px;
   left: -175px;
@@ -240,6 +251,17 @@ ul {
   top: 40%;
   left: calc(50% - 220px);
   opacity: 0.35;
+}
+
+.corner-splash--skills-bottom {
+  bottom: 6%;
+  left: 55%;
+  opacity: 0.35;
+}
+
+.corner-splash--skills-right {
+  top: 15%;
+  right: -40px;
 }
 
 .corner-splash--works {
@@ -263,6 +285,17 @@ ul {
   opacity: 0.35;
 }
 
+.corner-splash--works-bottom {
+  bottom: 8%;
+  left: 18%;
+  opacity: 0.35;
+}
+
+.corner-splash--works-right {
+  top: 62%;
+  right: -40px;
+}
+
 .corner-splash--contact {
   bottom: -140px;
   left: -165px;
@@ -282,6 +315,17 @@ ul {
   top: 2%;
   left: calc(50% - 130px);
   opacity: 0.4;
+}
+
+.corner-splash--contact-bottom {
+  bottom: 6%;
+  left: calc(50% + 180px);
+  opacity: 0.4;
+}
+
+.corner-splash--contact-left {
+  top: 45%;
+  left: -40px;
 }
 
 .corner-splash--hero-tl {
@@ -312,6 +356,16 @@ ul {
 .corner-splash--hero-bottom {
   bottom: -100px;
   right: 30%;
+}
+
+.corner-splash--hero-left {
+  top: 40%;
+  left: -70px;
+}
+
+.corner-splash--hero-right {
+  top: 58%;
+  right: -70px;
 }
 
 /* Ink splatter → eraser wipe (top-left) → re-splatter loop, all in sync */
