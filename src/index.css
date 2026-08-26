@@ -439,7 +439,7 @@ ul {
     opacity: 1;
     transform: scale(1);
     --sweep: 0deg;
-    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    animation-timing-function: ease-in-out;
   }
   68% {
     /* The wiper sweeps across the ink in one arc, fully erased. */
