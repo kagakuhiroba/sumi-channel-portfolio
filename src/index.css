@@ -136,67 +136,17 @@ ul {
   mask-repeat: no-repeat;
   -webkit-mask-size: 100% 100%;
   mask-size: 100% 100%;
-  -webkit-mask-image: linear-gradient(
-    100deg,
+  -webkit-mask-image: radial-gradient(
+    circle at calc(15% + var(--wipe) * 0.35%) 50%,
     transparent 0%,
-    transparent calc(var(--wipe) - 14%),
-    #fff calc(var(--wipe) - 14%),
-    #fff calc(var(--wipe) - 12.7%),
-    transparent calc(var(--wipe) - 12.7%),
-    transparent calc(var(--wipe) - 12.2%),
-    #fff calc(var(--wipe) - 12.2%),
-    #fff calc(var(--wipe) - 10.2%),
-    transparent calc(var(--wipe) - 10.2%),
-    transparent calc(var(--wipe) - 9.8%),
-    #fff calc(var(--wipe) - 9.8%),
-    #fff calc(var(--wipe) - 8.2%),
-    transparent calc(var(--wipe) - 8.2%),
-    transparent calc(var(--wipe) - 7.5%),
-    #fff calc(var(--wipe) - 7.5%),
-    #fff calc(var(--wipe) - 5.2%),
-    transparent calc(var(--wipe) - 5.2%),
-    transparent calc(var(--wipe) - 4.7%),
-    #fff calc(var(--wipe) - 4.7%),
-    #fff calc(var(--wipe) - 3.3%),
-    transparent calc(var(--wipe) - 3.3%),
-    transparent calc(var(--wipe) - 2.5%),
-    #fff calc(var(--wipe) - 2.5%),
-    #fff calc(var(--wipe) - 0.6%),
-    transparent calc(var(--wipe) - 0.6%),
-    transparent var(--wipe),
-    #fff var(--wipe),
-    #fff 100%
+    transparent calc(3% + var(--wipe) * 0.7%),
+    #fff calc(3% + var(--wipe) * 0.7%)
   );
-  mask-image: linear-gradient(
-    100deg,
+  mask-image: radial-gradient(
+    circle at calc(15% + var(--wipe) * 0.35%) 50%,
     transparent 0%,
-    transparent calc(var(--wipe) - 14%),
-    #fff calc(var(--wipe) - 14%),
-    #fff calc(var(--wipe) - 12.7%),
-    transparent calc(var(--wipe) - 12.7%),
-    transparent calc(var(--wipe) - 12.2%),
-    #fff calc(var(--wipe) - 12.2%),
-    #fff calc(var(--wipe) - 10.2%),
-    transparent calc(var(--wipe) - 10.2%),
-    transparent calc(var(--wipe) - 9.8%),
-    #fff calc(var(--wipe) - 9.8%),
-    #fff calc(var(--wipe) - 8.2%),
-    transparent calc(var(--wipe) - 8.2%),
-    transparent calc(var(--wipe) - 7.5%),
-    #fff calc(var(--wipe) - 7.5%),
-    #fff calc(var(--wipe) - 5.2%),
-    transparent calc(var(--wipe) - 5.2%),
-    transparent calc(var(--wipe) - 4.7%),
-    #fff calc(var(--wipe) - 4.7%),
-    #fff calc(var(--wipe) - 3.3%),
-    transparent calc(var(--wipe) - 3.3%),
-    transparent calc(var(--wipe) - 2.5%),
-    #fff calc(var(--wipe) - 2.5%),
-    #fff calc(var(--wipe) - 0.6%),
-    transparent calc(var(--wipe) - 0.6%),
-    transparent var(--wipe),
-    #fff var(--wipe),
-    #fff 100%
+    transparent calc(3% + var(--wipe) * 0.7%),
+    #fff calc(3% + var(--wipe) * 0.7%)
   );
 }
 
@@ -432,14 +382,13 @@ ul {
   }
 }
 
-/* The wipe erases left-to-right in 3 brush strokes, each rocking forward-back-forward
-   (like a hand scrubbing with a brush) with a small rotate wobble, instead of one clean
-   sweep — --wipe (registered above as a typed <percentage>, so browsers genuinely tween
-   it instead of snapping) drives the mask's dry-brush edge — a dense cluster of thin,
-   irregularly-spaced hard-edged strands (no smooth blur) trailing behind the boundary,
-   like bristle marks — via .corner-splash. Stage targets are tuned to the ink's actual
-   ~35–90% footprint so each stroke visibly scrubs across real ink. Once fully erased it
-   fades out and stays blank
+/* The wipe erases like a round eraser being rubbed across the ink: a circular hole in
+   the mask, driven by --wipe (registered above as a typed <percentage>, so browsers
+   genuinely tween it instead of snapping), whose center slides left-to-right and whose
+   radius grows via calc() on .corner-splash. The same 3-pass forward-back-forward
+   timing that used to drive a brush sweep now drives the eraser itself rocking back and
+   forth as it passes over the ink, growing a little further each pass until the whole
+   shape is covered. Once fully erased it fades out and stays blank
    for exactly 0.7s (of the 5.9s cycle) before the loop wraps and the ink splats back in. */
 @keyframes ink-cycle-diagonal {
   0% {
