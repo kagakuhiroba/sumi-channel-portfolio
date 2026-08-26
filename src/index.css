@@ -258,7 +258,7 @@ ul {
 @media (prefers-reduced-motion: no-preference) {
   .corner-splash {
     animation-name: ink-cycle-diagonal;
-    animation-duration: 6.7s;
+    animation-duration: 5.9s;
     animation-delay: 0s;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
@@ -323,46 +323,46 @@ ul {
    it instead of snapping) drives the mask's hard edge (no feather/gradient at all) via
    .corner-splash. Stage targets are tuned to the ink's actual ~35–90% footprint so each
    stage visibly scrubs across real ink. Once fully erased it fades out and stays blank
-   for exactly 0.7s (of the 6.7s cycle) before the loop wraps and the ink splats back in. */
+   for exactly 0.7s (of the 5.9s cycle) before the loop wraps and the ink splats back in. */
 @keyframes ink-cycle-diagonal {
   0% {
     opacity: 0;
     transform: scale(0.5);
     --wipe: 0%;
   }
-  4% {
+  5% {
     opacity: 1;
     transform: scale(1.1);
     --wipe: 0%;
   }
-  6%,
-  45% {
+  7%,
+  51% {
     opacity: 1;
     transform: scale(1);
     --wipe: 0%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
-  58% {
+  61% {
     /* Stage 1: the edge scrubs across the left portion of the ink. */
     opacity: 1;
     transform: scale(1);
     --wipe: 48%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
-  71% {
+  72% {
     /* Stage 2: it keeps scrubbing rightward. */
     opacity: 1;
     transform: scale(1);
     --wipe: 65%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
-  84% {
+  82% {
     /* Stage 3: the edge finishes crossing off the right side, fully erased. */
     opacity: 1;
     transform: scale(1);
     --wipe: 100%;
   }
-  90%,
+  89%,
   100% {
     opacity: 0;
     transform: scale(0.5);
