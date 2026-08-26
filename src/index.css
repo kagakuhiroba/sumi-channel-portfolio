@@ -6,13 +6,13 @@
   font-display: swap;
 }
 
-/* Registering --wipe as a typed <percentage> makes it a smoothly interpolatable custom
+/* Registering --sweep as a typed <angle> makes it a smoothly interpolatable custom
    property: browsers do not reliably tween between two literal gradient() values, but
-   they do tween a registered percentage, which the mask gradient below reads via calc(). */
-@property --wipe {
-  syntax: '<percentage>';
+   they do tween a registered angle, which the conic-gradient mask below reads directly. */
+@property --sweep {
+  syntax: '<angle>';
   inherits: true;
-  initial-value: 0%;
+  initial-value: 0deg;
 }
 
 :root {
@@ -131,22 +131,24 @@ ul {
   position: absolute;
   z-index: 0;
   pointer-events: none;
-  --wipe: 0%;
+  --sweep: 0deg;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   -webkit-mask-size: 100% 100%;
   mask-size: 100% 100%;
-  -webkit-mask-image: radial-gradient(
-    circle at calc(15% + var(--wipe) * 0.35) 50%,
-    transparent 0%,
-    transparent calc(3% + var(--wipe) * 0.7),
-    #fff calc(3% + var(--wipe) * 0.7)
+  -webkit-mask-image: conic-gradient(
+    from 0deg at 0% 100%,
+    transparent 0deg,
+    transparent var(--sweep),
+    #fff var(--sweep),
+    #fff 360deg
   );
-  mask-image: radial-gradient(
-    circle at calc(15% + var(--wipe) * 0.35) 50%,
-    transparent 0%,
-    transparent calc(3% + var(--wipe) * 0.7),
-    #fff calc(3% + var(--wipe) * 0.7)
+  mask-image: conic-gradient(
+    from 0deg at 0% 100%,
+    transparent 0deg,
+    transparent var(--sweep),
+    #fff var(--sweep),
+    #fff 360deg
   );
 }
 
@@ -414,42 +416,43 @@ ul {
   }
 }
 
-/* The wipe erases like a single swipe gesture: one continuous, fast, fling-like motion
-   (no taps, no pauses, no retreat) that slides the round eraser hole in the mask
-   left-to-right and grows its radius via calc() on .corner-splash, driven by --wipe
-   (registered above as a typed <percentage>, so browsers genuinely tween it instead of
-   snapping). Once fully erased it fades out and stays blank for about 0.7s (of the
-   5.9s cycle) before the loop wraps and the ink splats back in. */
+/* The wipe erases like a windshield wiper: pivoted at the bottom-left corner (via the
+   conic-gradient's "at 0% 100%" origin on .corner-splash), the blade starts pointing
+   straight up and sweeps clockwise to pointing right, wiping the whole shape in one
+   continuous 90° arc — driven by --sweep (registered above as a typed <angle>, so
+   browsers genuinely tween it instead of snapping). Once fully erased it fades out and
+   stays blank for about 0.7s (of the 5.9s cycle) before the loop wraps and the ink
+   splats back in. */
 @keyframes ink-cycle-diagonal {
   0% {
     opacity: 0;
     transform: scale(0.5);
-    --wipe: 0%;
+    --sweep: 0deg;
   }
   5% {
     opacity: 1;
     transform: scale(1.1);
-    --wipe: 0%;
+    --sweep: 0deg;
   }
   7%,
   55% {
     opacity: 1;
     transform: scale(1);
-    --wipe: 0%;
+    --sweep: 0deg;
     animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   }
   68% {
-    /* The swipe: one fast fling across the ink, fully erased. */
+    /* The wiper sweeps across the ink in one arc, fully erased. */
     opacity: 1;
     transform: scale(1);
-    --wipe: 100%;
+    --sweep: 90deg;
     animation-timing-function: ease-out;
   }
   74%,
   100% {
     opacity: 0;
     transform: scale(0.5);
-    --wipe: 100%;
+    --sweep: 90deg;
   }
 }
 
