@@ -137,16 +137,16 @@ ul {
   -webkit-mask-size: 100% 100%;
   mask-size: 100% 100%;
   -webkit-mask-image: radial-gradient(
-    circle at calc(15% + var(--wipe) * 0.35%) 50%,
+    circle at calc(15% + var(--wipe) * 0.35) 50%,
     transparent 0%,
-    transparent calc(3% + var(--wipe) * 0.7%),
-    #fff calc(3% + var(--wipe) * 0.7%)
+    transparent calc(3% + var(--wipe) * 0.7),
+    #fff calc(3% + var(--wipe) * 0.7)
   );
   mask-image: radial-gradient(
-    circle at calc(15% + var(--wipe) * 0.35%) 50%,
+    circle at calc(15% + var(--wipe) * 0.35) 50%,
     transparent 0%,
-    transparent calc(3% + var(--wipe) * 0.7%),
-    #fff calc(3% + var(--wipe) * 0.7%)
+    transparent calc(3% + var(--wipe) * 0.7),
+    #fff calc(3% + var(--wipe) * 0.7)
   );
 }
 
@@ -425,87 +425,87 @@ ul {
 @keyframes ink-cycle-diagonal {
   0% {
     opacity: 0;
-    transform: scale(0.5) rotate(0deg);
+    transform: scale(0.5);
     --wipe: 0%;
   }
   5% {
     opacity: 1;
-    transform: scale(1.1) rotate(0deg);
+    transform: scale(1.1);
     --wipe: 0%;
   }
   7%,
   51% {
     opacity: 1;
-    transform: scale(1) rotate(0deg);
+    transform: scale(1);
     --wipe: 0%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
   55% {
-    /* Stroke 1: brush pushes forward. */
+    /* Pass 1: the eraser pushes forward. */
     opacity: 1;
-    transform: scale(1) rotate(-1.5deg);
+    transform: scale(1);
     --wipe: 28%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
   57% {
-    /* Stroke 1: rocks back slightly. */
+    /* Pass 1: rocks back slightly. */
     opacity: 1;
-    transform: scale(1) rotate(1deg);
+    transform: scale(1);
     --wipe: 20%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
   61% {
-    /* Stroke 1 complete: the brush scrubs across the left portion of the ink. */
+    /* Pass 1 complete: the eraser scrubs across the left portion of the ink. */
     opacity: 1;
-    transform: scale(1) rotate(-1deg);
+    transform: scale(1);
     --wipe: 48%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
   66% {
-    /* Stroke 2: pushes further right. */
+    /* Pass 2: pushes further right. */
     opacity: 1;
-    transform: scale(1) rotate(1.3deg);
+    transform: scale(1);
     --wipe: 58%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
   68% {
-    /* Stroke 2: rocks back slightly. */
+    /* Pass 2: rocks back slightly. */
     opacity: 1;
-    transform: scale(1) rotate(-1deg);
+    transform: scale(1);
     --wipe: 50%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
   72% {
-    /* Stroke 2 complete: it keeps scrubbing rightward. */
+    /* Pass 2 complete: it keeps scrubbing rightward. */
     opacity: 1;
-    transform: scale(1) rotate(1deg);
+    transform: scale(1);
     --wipe: 65%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
   76% {
-    /* Stroke 3: pushes toward the right edge. */
+    /* Pass 3: pushes toward the right edge. */
     opacity: 1;
-    transform: scale(1) rotate(-1.3deg);
+    transform: scale(1);
     --wipe: 85%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
   78% {
-    /* Stroke 3: rocks back slightly. */
+    /* Pass 3: rocks back slightly. */
     opacity: 1;
-    transform: scale(1) rotate(1deg);
+    transform: scale(1);
     --wipe: 75%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
   82% {
-    /* Stroke 3 complete: the brush finishes crossing off the right side, fully erased. */
+    /* Pass 3 complete: the eraser finishes crossing off the right side, fully erased. */
     opacity: 1;
-    transform: scale(1) rotate(0deg);
+    transform: scale(1);
     --wipe: 100%;
   }
   89%,
   100% {
     opacity: 0;
-    transform: scale(0.5) rotate(0deg);
+    transform: scale(0.5);
     --wipe: 100%;
   }
 }
