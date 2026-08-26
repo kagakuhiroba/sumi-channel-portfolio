@@ -317,37 +317,37 @@ ul {
     --wipe: 0%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
-  44%,
-  46% {
+  42%,
+  43% {
     /* Stage 1: the edge scrubs across the left portion of the ink. */
     opacity: 1;
     transform: scale(1);
     --wipe: 45%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
-  57%,
-  59% {
+  52%,
+  53% {
     /* Stage 2: it keeps scrubbing rightward. */
     opacity: 1;
     transform: scale(1);
     --wipe: 58%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
-  70%,
-  72% {
+  62%,
+  63% {
     /* Stage 3: nearing the right edge of the ink. */
     opacity: 1;
     transform: scale(1);
     --wipe: 72%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
-  83% {
+  72% {
     /* Stage 4: the edge finishes crossing off the right side, fully erased. */
     opacity: 1;
     transform: scale(1);
     --wipe: 100%;
   }
-  90%,
+  84%,
   100% {
     opacity: 0;
     transform: scale(0.5);
