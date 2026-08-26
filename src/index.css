@@ -6,6 +6,15 @@
   font-display: swap;
 }
 
+/* Registering --wipe as a typed <percentage> makes it a smoothly interpolatable custom
+   property: browsers do not reliably tween between two literal gradient() values, but
+   they do tween a registered percentage, which the mask gradient below reads via calc(). */
+@property --wipe {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 0%;
+}
+
 :root {
   --color-blue: #1e6fd9;
   --color-blue-dark: #144f9e;
@@ -122,10 +131,13 @@ ul {
   position: absolute;
   z-index: 0;
   pointer-events: none;
+  --wipe: 0%;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   -webkit-mask-size: 100% 100%;
   mask-size: 100% 100%;
+  -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent calc(var(--wipe) - 16%), #fff calc(var(--wipe) + 16%), #fff 100%);
+  mask-image: linear-gradient(100deg, transparent 0%, transparent calc(var(--wipe) - 16%), #fff calc(var(--wipe) + 16%), #fff 100%);
 }
 
 .corner-splash--about {
@@ -282,29 +294,27 @@ ul {
   }
 }
 
-/* The wipe erases left-to-right in 4 paced stages. A single soft-edged boundary (a wide
-   ~32%-wide transparent-to-white feather, not a hard line) sweeps left to right; each
-   stage advances that boundary further right, so within every stage the soft edge visibly
-   scrubs across the ink (not a snap), then briefly holds before the next stage begins. */
+/* The wipe erases left-to-right in 4 paced stages. --wipe (registered above as a typed
+   <percentage>, so browsers genuinely tween it instead of snapping) drives the mask's
+   soft ~32%-wide feather via calc() on .corner-splash; each stage below just advances
+   --wipe further right, so the soft edge visibly scrubs across the ink continuously,
+   then briefly holds before the next stage begins. */
 @keyframes ink-cycle-diagonal {
   0% {
     opacity: 0;
     transform: scale(0.5);
-    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
-    mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
+    --wipe: 0%;
   }
   5% {
     opacity: 1;
     transform: scale(1.1);
-    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
-    mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
+    --wipe: 0%;
   }
   8%,
   33% {
     opacity: 1;
     transform: scale(1);
-    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
-    mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
+    --wipe: 0%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
   44%,
@@ -312,8 +322,7 @@ ul {
     /* Stage 1: the soft edge scrubs across the left portion of the ink. */
     opacity: 1;
     transform: scale(1);
-    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 9%, #fff 41%, #fff 100%);
-    mask-image: linear-gradient(100deg, transparent 0%, transparent 9%, #fff 41%, #fff 100%);
+    --wipe: 25%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
   57%,
@@ -321,8 +330,7 @@ ul {
     /* Stage 2: it keeps scrubbing rightward. */
     opacity: 1;
     transform: scale(1);
-    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 34%, #fff 66%, #fff 100%);
-    mask-image: linear-gradient(100deg, transparent 0%, transparent 34%, #fff 66%, #fff 100%);
+    --wipe: 50%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
   70%,
@@ -330,23 +338,20 @@ ul {
     /* Stage 3: nearing the right edge of the ink. */
     opacity: 1;
     transform: scale(1);
-    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 59%, #fff 91%, #fff 100%);
-    mask-image: linear-gradient(100deg, transparent 0%, transparent 59%, #fff 91%, #fff 100%);
+    --wipe: 75%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
   83% {
     /* Stage 4: the edge finishes crossing off the right side, fully erased. */
     opacity: 1;
     transform: scale(1);
-    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 100%, #fff 100%, #fff 100%);
-    mask-image: linear-gradient(100deg, transparent 0%, transparent 100%, #fff 100%, #fff 100%);
+    --wipe: 100%;
   }
   90%,
   100% {
     opacity: 0;
     transform: scale(0.5);
-    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 100%, #fff 100%, #fff 100%);
-    mask-image: linear-gradient(100deg, transparent 0%, transparent 100%, #fff 100%, #fff 100%);
+    --wipe: 100%;
   }
 }
 
