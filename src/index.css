@@ -137,7 +137,7 @@ ul {
   -webkit-mask-size: 100% 100%;
   mask-size: 100% 100%;
   -webkit-mask-image: linear-gradient(
-    140deg,
+    100deg,
     transparent 0%,
     transparent calc(var(--wipe) - 14%),
     #fff calc(var(--wipe) - 14%),
@@ -168,7 +168,7 @@ ul {
     #fff 100%
   );
   mask-image: linear-gradient(
-    140deg,
+    100deg,
     transparent 0%,
     transparent calc(var(--wipe) - 14%),
     #fff calc(var(--wipe) - 14%),
@@ -378,7 +378,7 @@ ul {
   }
 }
 
-/* The wipe erases from the upper-left in 3 stages, back to back with no pause between
+/* The wipe erases left-to-right in 3 stages, back to back with no pause between
    them — --wipe (registered above as a typed <percentage>, so browsers genuinely tween
    it instead of snapping) drives the mask's dry-brush edge — a dense cluster of thin,
    irregularly-spaced hard-edged strands (no smooth blur) trailing behind the boundary,
