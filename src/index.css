@@ -414,15 +414,12 @@ ul {
   }
 }
 
-/* The wipe erases like a round eraser being rubbed across the ink: a circular hole in
-   the mask, driven by --wipe (registered above as a typed <percentage>, so browsers
-   genuinely tween it instead of snapping), whose center slides left-to-right and whose
-   radius grows via calc() on .corner-splash. --wipe only ever increases (never retreats,
-   so the ink never flickers back into view / "shakes") — the scrubbing feel instead
-   comes from 9 quick short taps (3 per pass) in rapid rhythm, like a hand scrubbing an
-   eraser in short repeated strokes, each one pushing a little further than the last.
-   Once fully erased it fades out and stays blank
-   for exactly 0.7s (of the 5.9s cycle) before the loop wraps and the ink splats back in. */
+/* The wipe erases like a single swipe gesture: one continuous, fast, fling-like motion
+   (no taps, no pauses, no retreat) that slides the round eraser hole in the mask
+   left-to-right and grows its radius via calc() on .corner-splash, driven by --wipe
+   (registered above as a typed <percentage>, so browsers genuinely tween it instead of
+   snapping). Once fully erased it fades out and stays blank for about 0.7s (of the
+   5.9s cycle) before the loop wraps and the ink splats back in. */
 @keyframes ink-cycle-diagonal {
   0% {
     opacity: 0;
@@ -435,75 +432,20 @@ ul {
     --wipe: 0%;
   }
   7%,
-  51% {
+  55% {
     opacity: 1;
     transform: scale(1);
     --wipe: 0%;
-    animation-timing-function: cubic-bezier(0.45, 0, 0.15, 1);
-  }
-  55% {
-    /* Pass 1, tap 1. */
-    opacity: 1;
-    transform: scale(1);
-    --wipe: 15%;
-    animation-timing-function: cubic-bezier(0.45, 0, 0.15, 1);
-  }
-  58% {
-    /* Pass 1, tap 2. */
-    opacity: 1;
-    transform: scale(1);
-    --wipe: 30%;
-    animation-timing-function: cubic-bezier(0.45, 0, 0.15, 1);
-  }
-  61% {
-    /* Pass 1, tap 3 — the eraser has scrubbed across the left portion of the ink. */
-    opacity: 1;
-    transform: scale(1);
-    --wipe: 48%;
-    animation-timing-function: cubic-bezier(0.45, 0, 0.15, 1);
-  }
-  65% {
-    /* Pass 2, tap 1. */
-    opacity: 1;
-    transform: scale(1);
-    --wipe: 54%;
-    animation-timing-function: cubic-bezier(0.45, 0, 0.15, 1);
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   }
   68% {
-    /* Pass 2, tap 2. */
-    opacity: 1;
-    transform: scale(1);
-    --wipe: 60%;
-    animation-timing-function: cubic-bezier(0.45, 0, 0.15, 1);
-  }
-  71% {
-    /* Pass 2, tap 3 — it keeps scrubbing rightward. */
-    opacity: 1;
-    transform: scale(1);
-    --wipe: 65%;
-    animation-timing-function: cubic-bezier(0.45, 0, 0.15, 1);
-  }
-  75% {
-    /* Pass 3, tap 1. */
-    opacity: 1;
-    transform: scale(1);
-    --wipe: 78%;
-    animation-timing-function: cubic-bezier(0.45, 0, 0.15, 1);
-  }
-  78% {
-    /* Pass 3, tap 2. */
-    opacity: 1;
-    transform: scale(1);
-    --wipe: 90%;
-    animation-timing-function: cubic-bezier(0.45, 0, 0.15, 1);
-  }
-  82% {
-    /* Pass 3, tap 3 — fully erased. */
+    /* The swipe: one fast fling across the ink, fully erased. */
     opacity: 1;
     transform: scale(1);
     --wipe: 100%;
+    animation-timing-function: ease-out;
   }
-  89%,
+  74%,
   100% {
     opacity: 0;
     transform: scale(0.5);
