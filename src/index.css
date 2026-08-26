@@ -246,7 +246,7 @@ ul {
 @media (prefers-reduced-motion: no-preference) {
   .corner-splash {
     animation-name: ink-cycle-diagonal;
-    animation-duration: 10s;
+    animation-duration: 6.7s;
     animation-delay: 0s;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
@@ -306,60 +306,54 @@ ul {
   }
 }
 
-/* The wipe erases left-to-right in 4 paced stages. --wipe (registered above as a typed
+/* The wipe erases left-to-right in 3 paced stages. --wipe (registered above as a typed
    <percentage>, so browsers genuinely tween it instead of snapping) drives the mask's
    narrow ~10%-wide feather via calc() on .corner-splash — a scratchy, mostly-hard edge
    rather than a soft blur. Stage targets are tuned to the ink's actual ~35–90% footprint
-   so each stage visibly scrubs across real ink, then briefly holds before the next stage. */
+   so each stage visibly scrubs across real ink, then briefly holds before the next stage.
+   Once fully erased it fades out and stays blank for exactly 0.7s (of the 6.7s cycle)
+   before the loop wraps and the ink splats back in. */
 @keyframes ink-cycle-diagonal {
   0% {
     opacity: 0;
     transform: scale(0.5);
     --wipe: 0%;
   }
-  5% {
+  4% {
     opacity: 1;
     transform: scale(1.1);
     --wipe: 0%;
   }
-  8%,
-  33% {
+  6%,
+  45% {
     opacity: 1;
     transform: scale(1);
     --wipe: 0%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
-  42%,
-  43% {
+  58%,
+  60% {
     /* Stage 1: the edge scrubs across the left portion of the ink. */
     opacity: 1;
     transform: scale(1);
-    --wipe: 45%;
+    --wipe: 48%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
-  52%,
-  53% {
+  73%,
+  75% {
     /* Stage 2: it keeps scrubbing rightward. */
     opacity: 1;
     transform: scale(1);
-    --wipe: 58%;
+    --wipe: 65%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
-  62%,
-  63% {
-    /* Stage 3: nearing the right edge of the ink. */
-    opacity: 1;
-    transform: scale(1);
-    --wipe: 72%;
-    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  72% {
-    /* Stage 4: the edge finishes crossing off the right side, fully erased. */
+  88% {
+    /* Stage 3: the edge finishes crossing off the right side, fully erased. */
     opacity: 1;
     transform: scale(1);
     --wipe: 100%;
   }
-  84%,
+  90%,
   100% {
     opacity: 0;
     transform: scale(0.5);
