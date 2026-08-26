@@ -136,8 +136,8 @@ ul {
   mask-repeat: no-repeat;
   -webkit-mask-size: 100% 100%;
   mask-size: 100% 100%;
-  -webkit-mask-image: linear-gradient(120deg, transparent 0%, transparent calc(var(--wipe) - 5%), #fff calc(var(--wipe) + 5%));
-  mask-image: linear-gradient(120deg, transparent 0%, transparent calc(var(--wipe) - 5%), #fff calc(var(--wipe) + 5%));
+  -webkit-mask-image: linear-gradient(140deg, transparent 0%, transparent var(--wipe), #fff var(--wipe));
+  mask-image: linear-gradient(140deg, transparent 0%, transparent var(--wipe), #fff var(--wipe));
 }
 
 .corner-splash--about {
@@ -318,13 +318,12 @@ ul {
   }
 }
 
-/* The wipe erases left-to-right in 3 stages, back to back with no pause between them —
-   --wipe (registered above as a typed <percentage>, so browsers genuinely tween it
-   instead of snapping) drives the mask's narrow ~10%-wide feather via calc() on
-   .corner-splash — a scratchy, mostly-hard edge rather than a soft blur. Stage targets
-   are tuned to the ink's actual ~35–90% footprint so each stage visibly scrubs across
-   real ink. Once fully erased it fades out and stays blank for exactly 0.7s (of the
-   6.7s cycle) before the loop wraps and the ink splats back in. */
+/* The wipe erases from the upper-left in 3 stages, back to back with no pause between
+   them — --wipe (registered above as a typed <percentage>, so browsers genuinely tween
+   it instead of snapping) drives the mask's hard edge (no feather/gradient at all) via
+   .corner-splash. Stage targets are tuned to the ink's actual ~35–90% footprint so each
+   stage visibly scrubs across real ink. Once fully erased it fades out and stays blank
+   for exactly 0.7s (of the 6.7s cycle) before the loop wraps and the ink splats back in. */
 @keyframes ink-cycle-diagonal {
   0% {
     opacity: 0;
