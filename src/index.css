@@ -136,8 +136,8 @@ ul {
   mask-repeat: no-repeat;
   -webkit-mask-size: 100% 100%;
   mask-size: 100% 100%;
-  -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent calc(var(--wipe) - 16%), #fff calc(var(--wipe) + 16%), #fff 100%);
-  mask-image: linear-gradient(100deg, transparent 0%, transparent calc(var(--wipe) - 16%), #fff calc(var(--wipe) + 16%), #fff 100%);
+  -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent calc(var(--wipe) - 5%), #fff calc(var(--wipe) + 5%));
+  mask-image: linear-gradient(100deg, transparent 0%, transparent calc(var(--wipe) - 5%), #fff calc(var(--wipe) + 5%));
 }
 
 .corner-splash--about {
@@ -234,7 +234,7 @@ ul {
 @media (prefers-reduced-motion: no-preference) {
   .corner-splash {
     animation-name: ink-cycle-diagonal;
-    animation-duration: 13s;
+    animation-duration: 10s;
     animation-delay: 0s;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
@@ -296,9 +296,9 @@ ul {
 
 /* The wipe erases left-to-right in 4 paced stages. --wipe (registered above as a typed
    <percentage>, so browsers genuinely tween it instead of snapping) drives the mask's
-   soft ~32%-wide feather via calc() on .corner-splash; each stage below just advances
-   --wipe further right, so the soft edge visibly scrubs across the ink continuously,
-   then briefly holds before the next stage begins. */
+   narrow ~10%-wide feather via calc() on .corner-splash — a scratchy, mostly-hard edge
+   rather than a soft blur. Stage targets are tuned to the ink's actual ~35–90% footprint
+   so each stage visibly scrubs across real ink, then briefly holds before the next stage. */
 @keyframes ink-cycle-diagonal {
   0% {
     opacity: 0;
@@ -319,10 +319,10 @@ ul {
   }
   44%,
   46% {
-    /* Stage 1: the soft edge scrubs across the left portion of the ink. */
+    /* Stage 1: the edge scrubs across the left portion of the ink. */
     opacity: 1;
     transform: scale(1);
-    --wipe: 25%;
+    --wipe: 45%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
   57%,
@@ -330,7 +330,7 @@ ul {
     /* Stage 2: it keeps scrubbing rightward. */
     opacity: 1;
     transform: scale(1);
-    --wipe: 50%;
+    --wipe: 58%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
   70%,
@@ -338,7 +338,7 @@ ul {
     /* Stage 3: nearing the right edge of the ink. */
     opacity: 1;
     transform: scale(1);
-    --wipe: 75%;
+    --wipe: 72%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
   83% {
