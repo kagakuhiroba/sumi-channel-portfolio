@@ -9,12 +9,12 @@ export function Skills() {
   return (
     <section id="skills" className="section section--tinted">
       <CornerSplash position="skills" color="blue" size={500} variant="b" rotate={18} />
-      <CornerSplash position="skills-alt" color="orange" size={250} variant="a" rotate={-25} />
+      <CornerSplash position="skills-alt" color="orange" size={250} variant="h" rotate={-25} />
       <CornerSplash position="skills-top" color="orange" size={205} variant="c" rotate={50} />
       <CornerSplash position="skills-mid" color="blue" size={240} variant="d" rotate={-15} />
       <CornerSplash position="skills-bottom" color="orange" size={190} variant="e" rotate={35} />
       <CornerSplash position="skills-right" color="blue" size={160} variant="f" rotate={-45} />
-      <CornerSplash position="skills-left" color="orange" size={140} variant="d" rotate={20} />
+      <CornerSplash position="skills-left" color="orange" size={140} variant="i" rotate={20} />
       <div ref={ref} className={`section__inner fade-scroll${visible ? ' fade-scroll--visible' : ''}`}>
         <h2 className="section__title">
           <span className="section__title-accent">Skills</span> スキル

@@ -48,6 +48,43 @@ export function InkSplatterDefs() {
           <circle cx="42" cy="-22" r="8" />
           <circle cx="-44" cy="6" r="9" />
         </g>
+        <g id="ink-core-g">
+          <circle cx="0" cy="0" r="26" />
+          <circle cx="-18" cy="-22" r="18" />
+          <circle cx="16" cy="-16" r="16" />
+          <circle cx="6" cy="24" r="14" />
+          <circle cx="30" cy="20" r="10" />
+          <circle cx="42" cy="34" r="7" />
+          <circle cx="52" cy="48" r="5" />
+        </g>
+        <g id="ink-core-h">
+          <circle cx="0" cy="0" r="22" />
+          <circle cx="26" cy="4" r="10" />
+          <circle cx="-24" cy="-8" r="9" />
+          <circle cx="8" cy="-30" r="8" />
+          <circle cx="-10" cy="28" r="8" />
+          <circle cx="32" cy="-20" r="7" />
+          <circle cx="-32" cy="16" r="7" />
+          <circle cx="14" cy="34" r="6" />
+          <circle cx="-6" cy="-36" r="6" />
+        </g>
+        <g id="ink-core-i">
+          <circle cx="0" cy="0" r="20" />
+          <circle cx="20" cy="10" r="18" />
+          <circle cx="36" cy="26" r="15" />
+          <circle cx="46" cy="46" r="11" />
+          <circle cx="-14" cy="-12" r="16" />
+          <circle cx="-26" cy="-28" r="12" />
+        </g>
+        <g id="ink-core-j">
+          <circle cx="0" cy="0" r="18" />
+          <circle cx="10" cy="6" r="14" />
+          <circle cx="-8" cy="-6" r="13" />
+          <circle cx="6" cy="-14" r="10" />
+          <circle cx="-12" cy="10" r="9" />
+          <circle cx="14" cy="12" r="8" />
+          <circle cx="-4" cy="18" r="7" />
+        </g>
         <circle id="ink-satellite" cx="46" cy="0" r="15" />
         <g id="ink-fling">
           <circle cx="70" cy="0" r="6" />
@@ -72,7 +109,7 @@ export function InkSplatterDefs() {
   )
 }
 
-type InkVariant = 'a' | 'b' | 'c' | 'd' | 'e' | 'f'
+type InkVariant = 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' | 'j'
 
 const SATELLITE_CONFIG: Record<InkVariant, { angle: number; scale: number }[]> = {
   a: [
@@ -122,9 +159,49 @@ const SATELLITE_CONFIG: Record<InkVariant, { angle: number; scale: number }[]> =
     { angle: 280, scale: 0.5 },
     { angle: 330, scale: 0.8 },
   ],
+  g: [
+    { angle: 15, scale: 0.5 },
+    { angle: 80, scale: 0.9 },
+    { angle: 150, scale: 0.4 },
+    { angle: 210, scale: 0.7 },
+    { angle: 290, scale: 0.55 },
+  ],
+  h: [
+    { angle: 40, scale: 0.5 },
+    { angle: 95, scale: 0.65 },
+    { angle: 160, scale: 0.4 },
+    { angle: 205, scale: 0.6 },
+    { angle: 260, scale: 0.45 },
+    { angle: 320, scale: 0.7 },
+  ],
+  i: [
+    { angle: 60, scale: 0.6 },
+    { angle: 120, scale: 0.9 },
+    { angle: 190, scale: 0.5 },
+    { angle: 250, scale: 0.75 },
+  ],
+  j: [
+    { angle: 25, scale: 0.4 },
+    { angle: 75, scale: 0.55 },
+    { angle: 135, scale: 0.35 },
+    { angle: 195, scale: 0.5 },
+    { angle: 245, scale: 0.4 },
+    { angle: 305, scale: 0.6 },
+  ],
 }
 
-const FLING_ANGLE: Record<InkVariant, number> = { a: 100, b: -60, c: 200, d: 150, e: -100, f: 60 }
+const FLING_ANGLE: Record<InkVariant, number> = {
+  a: 100,
+  b: -60,
+  c: 200,
+  d: 150,
+  e: -100,
+  f: 60,
+  g: 170,
+  h: -40,
+  i: 210,
+  j: -150,
+}
 
 type SplashProps = {
   className?: string
