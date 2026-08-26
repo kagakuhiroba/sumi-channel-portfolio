@@ -17,6 +17,7 @@ export function Works() {
       <CornerSplash position="works" color="blue" size={420} variant="c" rotate={-15} />
       <CornerSplash position="works-alt" color="orange" size={300} variant="b" rotate={35} />
       <CornerSplash position="works-top" color="blue" size={180} variant="a" rotate={-55} />
+      <CornerSplash position="works-mid" color="orange" size={230} variant="c" rotate={20} />
       <div ref={ref} className={`section__inner fade-scroll${visible ? ' fade-scroll--visible' : ''}`}>
         <h2 className="section__title">
           <span className="section__title-accent">Works</span> 作品・実績

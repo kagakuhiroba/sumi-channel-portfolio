@@ -176,6 +176,12 @@ ul {
   right: -60px;
 }
 
+.corner-splash--skills-mid {
+  top: 40%;
+  left: calc(50% - 220px);
+  opacity: 0.35;
+}
+
 .corner-splash--works {
   bottom: -140px;
   right: -165px;
@@ -189,6 +195,12 @@ ul {
 .corner-splash--works-top {
   top: -75px;
   left: -60px;
+}
+
+.corner-splash--works-mid {
+  top: 44%;
+  left: calc(50% + 60px);
+  opacity: 0.35;
 }
 
 .corner-splash--contact {
@@ -580,7 +592,8 @@ ul {
 }
 
 .skill-card {
-  background: #fff;
+  position: relative;
+  background: rgba(255, 255, 255, 0.9);
   border-radius: var(--radius-md);
   padding: 24px;
   box-shadow: 0 8px 24px -16px rgba(28, 37, 48, 0.25);
@@ -668,7 +681,8 @@ ul {
 }
 
 .work-card {
-  background: #fff;
+  position: relative;
+  background: rgba(255, 255, 255, 0.9);
   border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: 0 8px 24px -16px rgba(28, 37, 48, 0.25);
