@@ -282,72 +282,71 @@ ul {
   }
 }
 
-/* The wipe erases in 4 alternating stages, each a quarter of the shape: left quarter,
-   then right quarter, then the next-left quarter, then the next-right quarter, meeting
-   in the middle. A single gradient with two independent boundaries (growing in from the
-   left, and in from the right) represents all 4 stages; brief holds between stages make
-   each step read distinctly, and every step itself eases smoothly (no constant speed). */
+/* The wipe erases left-to-right in 4 paced stages. A single soft-edged boundary (a wide
+   ~32%-wide transparent-to-white feather, not a hard line) sweeps left to right; each
+   stage advances that boundary further right, so within every stage the soft edge visibly
+   scrubs across the ink (not a snap), then briefly holds before the next stage begins. */
 @keyframes ink-cycle-diagonal {
   0% {
     opacity: 0;
     transform: scale(0.5);
-    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%, transparent 100%, transparent 100%);
-    mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%, transparent 100%, transparent 100%);
+    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
+    mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
   }
   5% {
     opacity: 1;
     transform: scale(1.1);
-    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%, transparent 100%, transparent 100%);
-    mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%, transparent 100%, transparent 100%);
+    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
+    mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
   }
   8%,
   33% {
     opacity: 1;
     transform: scale(1);
-    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%, transparent 100%, transparent 100%);
-    mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%, transparent 100%, transparent 100%);
+    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
+    mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%);
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
   44%,
   46% {
-    /* Stage 1: erase the left quarter. */
+    /* Stage 1: the soft edge scrubs across the left portion of the ink. */
     opacity: 1;
     transform: scale(1);
-    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 45%, #fff 51%, #fff 100%, transparent 100%, transparent 100%);
-    mask-image: linear-gradient(100deg, transparent 0%, transparent 45%, #fff 51%, #fff 100%, transparent 100%, transparent 100%);
+    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 9%, #fff 41%, #fff 100%);
+    mask-image: linear-gradient(100deg, transparent 0%, transparent 9%, #fff 41%, #fff 100%);
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
   57%,
   59% {
-    /* Stage 2: erase the right quarter. */
+    /* Stage 2: it keeps scrubbing rightward. */
     opacity: 1;
     transform: scale(1);
-    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 45%, #fff 51%, #fff 70%, transparent 76%, transparent 100%);
-    mask-image: linear-gradient(100deg, transparent 0%, transparent 45%, #fff 51%, #fff 70%, transparent 76%, transparent 100%);
+    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 34%, #fff 66%, #fff 100%);
+    mask-image: linear-gradient(100deg, transparent 0%, transparent 34%, #fff 66%, #fff 100%);
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
   70%,
   72% {
-    /* Stage 3: erase the next-left quarter. */
+    /* Stage 3: nearing the right edge of the ink. */
     opacity: 1;
     transform: scale(1);
-    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 57%, #fff 63%, #fff 70%, transparent 76%, transparent 100%);
-    mask-image: linear-gradient(100deg, transparent 0%, transparent 57%, #fff 63%, #fff 70%, transparent 76%, transparent 100%);
+    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 59%, #fff 91%, #fff 100%);
+    mask-image: linear-gradient(100deg, transparent 0%, transparent 59%, #fff 91%, #fff 100%);
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
   83% {
-    /* Stage 4: erase the last quarter, the two boundaries meet, fully erased. */
+    /* Stage 4: the edge finishes crossing off the right side, fully erased. */
     opacity: 1;
     transform: scale(1);
-    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 100%, #fff 100%, #fff 100%, transparent 100%, transparent 100%);
-    mask-image: linear-gradient(100deg, transparent 0%, transparent 100%, #fff 100%, #fff 100%, transparent 100%, transparent 100%);
+    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 100%, #fff 100%, #fff 100%);
+    mask-image: linear-gradient(100deg, transparent 0%, transparent 100%, #fff 100%, #fff 100%);
   }
   90%,
   100% {
     opacity: 0;
     transform: scale(0.5);
-    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 100%, #fff 100%, #fff 100%, transparent 100%, transparent 100%);
-    mask-image: linear-gradient(100deg, transparent 0%, transparent 100%, #fff 100%, #fff 100%, transparent 100%, transparent 100%);
+    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 100%, #fff 100%, #fff 100%);
+    mask-image: linear-gradient(100deg, transparent 0%, transparent 100%, #fff 100%, #fff 100%);
   }
 }
 
