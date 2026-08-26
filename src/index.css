@@ -136,8 +136,8 @@ ul {
   mask-repeat: no-repeat;
   -webkit-mask-size: 100% 100%;
   mask-size: 100% 100%;
-  -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent calc(var(--wipe) - 5%), #fff calc(var(--wipe) + 5%));
-  mask-image: linear-gradient(100deg, transparent 0%, transparent calc(var(--wipe) - 5%), #fff calc(var(--wipe) + 5%));
+  -webkit-mask-image: linear-gradient(120deg, transparent 0%, transparent calc(var(--wipe) - 5%), #fff calc(var(--wipe) + 5%));
+  mask-image: linear-gradient(120deg, transparent 0%, transparent calc(var(--wipe) - 5%), #fff calc(var(--wipe) + 5%));
 }
 
 .corner-splash--about {
