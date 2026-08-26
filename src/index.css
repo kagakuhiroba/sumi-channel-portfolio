@@ -222,7 +222,7 @@ ul {
 @media (prefers-reduced-motion: no-preference) {
   .corner-splash {
     animation-name: ink-cycle-diagonal;
-    animation-duration: 7s;
+    animation-duration: 9s;
     animation-delay: 0s;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
@@ -292,35 +292,43 @@ ul {
     -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%, transparent 100%, transparent 100%);
     mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%, transparent 100%, transparent 100%);
   }
-  8% {
+  6% {
     opacity: 1;
     transform: scale(1.1);
     -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%, transparent 100%, transparent 100%);
     mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%, transparent 100%, transparent 100%);
   }
-  14%,
-  50% {
+  10%,
+  40% {
     opacity: 1;
     transform: scale(1);
     -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%, transparent 100%, transparent 100%);
     mask-image: linear-gradient(100deg, transparent 0%, transparent 0%, #fff 0%, #fff 100%, transparent 100%, transparent 100%);
-    animation-timing-function: cubic-bezier(0.45, 0, 0.15, 1);
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
-  63% {
+  50% {
+    /* Pass 1 halfway: erasing in from the left edge. */
+    opacity: 1;
+    transform: scale(1);
+    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 22%, #fff 34%, #fff 100%, transparent 100%, transparent 100%);
+    mask-image: linear-gradient(100deg, transparent 0%, transparent 22%, #fff 34%, #fff 100%, transparent 100%, transparent 100%);
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  60% {
     /* Pass 1 complete: erased left-to-right up to ~66%, right side still full ink. */
     opacity: 1;
     transform: scale(1);
     -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 54%, #fff 66%, #fff 100%, transparent 100%, transparent 100%);
     mask-image: linear-gradient(100deg, transparent 0%, transparent 54%, #fff 66%, #fff 100%, transparent 100%, transparent 100%);
-    animation-timing-function: cubic-bezier(0.45, 0, 0.15, 1);
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
-  71% {
+  70% {
     /* Pass 2 halfway: a second boundary erases inward from the right edge. */
     opacity: 1;
     transform: scale(1);
     -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 54%, #fff 66%, #fff 74%, transparent 86%, transparent 100%);
     mask-image: linear-gradient(100deg, transparent 0%, transparent 54%, #fff 66%, #fff 74%, transparent 86%, transparent 100%);
-    animation-timing-function: cubic-bezier(0.45, 0, 0.15, 1);
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
   80% {
     /* Pass 2 complete: the two boundaries meet, fully erased. */
@@ -329,7 +337,7 @@ ul {
     -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 100%, #fff 100%, #fff 100%, transparent 100%, transparent 100%);
     mask-image: linear-gradient(100deg, transparent 0%, transparent 100%, #fff 100%, #fff 100%, transparent 100%, transparent 100%);
   }
-  84%,
+  86%,
   100% {
     opacity: 0;
     transform: scale(0.5);
