@@ -378,56 +378,99 @@ ul {
   }
 }
 
-/* The wipe erases left-to-right in 3 stages, back to back with no pause between
-   them — --wipe (registered above as a typed <percentage>, so browsers genuinely tween
+/* The wipe erases left-to-right in 3 brush strokes, each rocking forward-back-forward
+   (like a hand scrubbing with a brush) with a small rotate wobble, instead of one clean
+   sweep — --wipe (registered above as a typed <percentage>, so browsers genuinely tween
    it instead of snapping) drives the mask's dry-brush edge — a dense cluster of thin,
    irregularly-spaced hard-edged strands (no smooth blur) trailing behind the boundary,
    like bristle marks — via .corner-splash. Stage targets are tuned to the ink's actual
-   ~35–90% footprint so each stage visibly scrubs across real ink. Once fully erased it
+   ~35–90% footprint so each stroke visibly scrubs across real ink. Once fully erased it
    fades out and stays blank
    for exactly 0.7s (of the 5.9s cycle) before the loop wraps and the ink splats back in. */
 @keyframes ink-cycle-diagonal {
   0% {
     opacity: 0;
-    transform: scale(0.5);
+    transform: scale(0.5) rotate(0deg);
     --wipe: 0%;
   }
   5% {
     opacity: 1;
-    transform: scale(1.1);
+    transform: scale(1.1) rotate(0deg);
     --wipe: 0%;
   }
   7%,
   51% {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) rotate(0deg);
     --wipe: 0%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
-  61% {
-    /* Stage 1: the edge scrubs across the left portion of the ink. */
+  55% {
+    /* Stroke 1: brush pushes forward. */
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) rotate(-1.5deg);
+    --wipe: 28%;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  57% {
+    /* Stroke 1: rocks back slightly. */
+    opacity: 1;
+    transform: scale(1) rotate(1deg);
+    --wipe: 20%;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  61% {
+    /* Stroke 1 complete: the brush scrubs across the left portion of the ink. */
+    opacity: 1;
+    transform: scale(1) rotate(-1deg);
     --wipe: 48%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
-  72% {
-    /* Stage 2: it keeps scrubbing rightward. */
+  66% {
+    /* Stroke 2: pushes further right. */
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) rotate(1.3deg);
+    --wipe: 58%;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  68% {
+    /* Stroke 2: rocks back slightly. */
+    opacity: 1;
+    transform: scale(1) rotate(-1deg);
+    --wipe: 50%;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  72% {
+    /* Stroke 2 complete: it keeps scrubbing rightward. */
+    opacity: 1;
+    transform: scale(1) rotate(1deg);
     --wipe: 65%;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
-  82% {
-    /* Stage 3: the edge finishes crossing off the right side, fully erased. */
+  76% {
+    /* Stroke 3: pushes toward the right edge. */
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) rotate(-1.3deg);
+    --wipe: 85%;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  78% {
+    /* Stroke 3: rocks back slightly. */
+    opacity: 1;
+    transform: scale(1) rotate(1deg);
+    --wipe: 75%;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  82% {
+    /* Stroke 3 complete: the brush finishes crossing off the right side, fully erased. */
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
     --wipe: 100%;
   }
   89%,
   100% {
     opacity: 0;
-    transform: scale(0.5);
+    transform: scale(0.5) rotate(0deg);
     --wipe: 100%;
   }
 }
