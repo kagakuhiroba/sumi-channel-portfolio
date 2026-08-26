@@ -15,13 +15,16 @@ export function Contact() {
       <CornerSplash position="contact" color="orange" size={480} variant="a" rotate={22} />
       <CornerSplash position="contact-alt" color="blue" size={240} variant="c" rotate={-30} />
       <CornerSplash position="contact-top" color="orange" size={210} variant="b" rotate={60} />
+      <CornerSplash position="contact-text" color="blue" size={260} variant="a" rotate={-10} />
       <div ref={ref} className={`section__inner contact fade-scroll${visible ? ' fade-scroll--visible' : ''}`}>
-        <h2 className="section__title">
-          <span className="section__title-accent">Contact</span> お問い合わせ
-        </h2>
-        <p className="contact__lead">
-          撮影のご依頼・お見積もりなど、お気軽にご連絡ください。
-        </p>
+        <div className="contact__text">
+          <h2 className="section__title">
+            <span className="section__title-accent">Contact</span> お問い合わせ
+          </h2>
+          <p className="contact__lead">
+            撮影のご依頼・お見積もりなど、お気軽にご連絡ください。
+          </p>
+        </div>
         <div className="contact__panel">
           <a className="button button--primary" href="mailto:contact@example.com">
             メールで問い合わせる
