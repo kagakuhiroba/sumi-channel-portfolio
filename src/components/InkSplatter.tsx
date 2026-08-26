@@ -24,6 +24,30 @@ export function InkSplatterDefs() {
           <circle cx="-22" cy="10" r="14" />
           <circle cx="20" cy="-8" r="13" />
         </g>
+        <g id="ink-core-d">
+          <circle cx="0" cy="0" r="28" />
+          <circle cx="24" cy="-20" r="20" />
+          <circle cx="46" cy="-38" r="14" />
+          <circle cx="-22" cy="18" r="18" />
+          <circle cx="-40" cy="34" r="12" />
+          <circle cx="10" cy="-8" r="16" />
+        </g>
+        <g id="ink-core-e">
+          <circle cx="0" cy="0" r="36" />
+          <circle cx="14" cy="10" r="26" />
+          <circle cx="-12" cy="-14" r="24" />
+          <circle cx="8" cy="-20" r="16" />
+          <circle cx="-16" cy="12" r="14" />
+        </g>
+        <g id="ink-core-f">
+          <circle cx="0" cy="0" r="24" />
+          <circle cx="38" cy="14" r="16" />
+          <circle cx="-34" cy="-18" r="14" />
+          <circle cx="18" cy="-36" r="11" />
+          <circle cx="-24" cy="30" r="10" />
+          <circle cx="42" cy="-22" r="8" />
+          <circle cx="-44" cy="6" r="9" />
+        </g>
         <circle id="ink-satellite" cx="46" cy="0" r="15" />
         <g id="ink-fling">
           <circle cx="70" cy="0" r="6" />
@@ -48,7 +72,7 @@ export function InkSplatterDefs() {
   )
 }
 
-type InkVariant = 'a' | 'b' | 'c'
+type InkVariant = 'a' | 'b' | 'c' | 'd' | 'e' | 'f'
 
 const SATELLITE_CONFIG: Record<InkVariant, { angle: number; scale: number }[]> = {
   a: [
@@ -75,9 +99,32 @@ const SATELLITE_CONFIG: Record<InkVariant, { angle: number; scale: number }[]> =
     { angle: 285, scale: 0.85 },
     { angle: 335, scale: 0.65 },
   ],
+  d: [
+    { angle: 5, scale: 0.7 },
+    { angle: 60, scale: 1.0 },
+    { angle: 130, scale: 0.5 },
+    { angle: 200, scale: 0.9 },
+    { angle: 275, scale: 0.6 },
+  ],
+  e: [
+    { angle: 30, scale: 0.6 },
+    { angle: 90, scale: 0.5 },
+    { angle: 160, scale: 0.75 },
+    { angle: 220, scale: 0.55 },
+    { angle: 300, scale: 0.65 },
+  ],
+  f: [
+    { angle: 0, scale: 1.2 },
+    { angle: 50, scale: 0.7 },
+    { angle: 110, scale: 1.0 },
+    { angle: 170, scale: 0.6 },
+    { angle: 225, scale: 1.1 },
+    { angle: 280, scale: 0.5 },
+    { angle: 330, scale: 0.8 },
+  ],
 }
 
-const FLING_ANGLE: Record<InkVariant, number> = { a: 100, b: -60, c: 200 }
+const FLING_ANGLE: Record<InkVariant, number> = { a: 100, b: -60, c: 200, d: 150, e: -100, f: 60 }
 
 type SplashProps = {
   className?: string

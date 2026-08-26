@@ -182,6 +182,11 @@ ul {
   left: -50px;
 }
 
+.corner-splash--about-right {
+  top: 68%;
+  right: -35px;
+}
+
 .corner-splash--skills {
   bottom: -155px;
   left: -175px;
@@ -212,6 +217,11 @@ ul {
 .corner-splash--skills-right {
   top: 15%;
   right: -40px;
+}
+
+.corner-splash--skills-left {
+  top: 65%;
+  left: -30px;
 }
 
 .corner-splash--works {
@@ -246,6 +256,11 @@ ul {
   right: -40px;
 }
 
+.corner-splash--works-left {
+  top: 20%;
+  left: -30px;
+}
+
 .corner-splash--contact {
   bottom: -140px;
   left: -165px;
@@ -276,6 +291,11 @@ ul {
 .corner-splash--contact-left {
   top: 45%;
   left: -40px;
+}
+
+.corner-splash--contact-right {
+  top: 75%;
+  right: -30px;
 }
 
 .corner-splash--hero-tl {
@@ -316,6 +336,18 @@ ul {
 .corner-splash--hero-right {
   top: 58%;
   right: -70px;
+}
+
+.corner-splash--hero-mid-tr {
+  top: 18%;
+  right: 15%;
+  opacity: 0.5;
+}
+
+.corner-splash--hero-mid-bl {
+  bottom: 22%;
+  left: 12%;
+  opacity: 0.5;
 }
 
 /* Ink splatter → eraser wipe (top-left) → re-splatter loop, all in sync */

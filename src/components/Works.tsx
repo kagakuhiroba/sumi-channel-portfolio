@@ -17,9 +17,10 @@ export function Works() {
       <CornerSplash position="works" color="blue" size={420} variant="c" rotate={-15} />
       <CornerSplash position="works-alt" color="orange" size={300} variant="b" rotate={35} />
       <CornerSplash position="works-top" color="blue" size={180} variant="a" rotate={-55} />
-      <CornerSplash position="works-mid" color="orange" size={230} variant="c" rotate={20} />
-      <CornerSplash position="works-bottom" color="blue" size={200} variant="a" rotate={-40} />
-      <CornerSplash position="works-right" color="orange" size={170} variant="b" rotate={30} />
+      <CornerSplash position="works-mid" color="orange" size={230} variant="e" rotate={20} />
+      <CornerSplash position="works-bottom" color="blue" size={200} variant="d" rotate={-40} />
+      <CornerSplash position="works-right" color="orange" size={170} variant="f" rotate={30} />
+      <CornerSplash position="works-left" color="blue" size={145} variant="e" rotate={-25} />
       <div ref={ref} className={`section__inner fade-scroll${visible ? ' fade-scroll--visible' : ''}`}>
         <h2 className="section__title">
           <span className="section__title-accent">Works</span> 作品・実績

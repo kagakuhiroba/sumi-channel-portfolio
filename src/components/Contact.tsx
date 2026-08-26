@@ -15,9 +15,10 @@ export function Contact() {
       <CornerSplash position="contact" color="orange" size={480} variant="a" rotate={22} />
       <CornerSplash position="contact-alt" color="blue" size={240} variant="c" rotate={-30} />
       <CornerSplash position="contact-top" color="orange" size={210} variant="b" rotate={60} />
-      <CornerSplash position="contact-text" color="blue" size={260} variant="a" rotate={-10} />
-      <CornerSplash position="contact-bottom" color="orange" size={190} variant="c" rotate={40} />
-      <CornerSplash position="contact-left" color="blue" size={160} variant="b" rotate={-35} />
+      <CornerSplash position="contact-text" color="blue" size={260} variant="d" rotate={-10} />
+      <CornerSplash position="contact-bottom" color="orange" size={190} variant="e" rotate={40} />
+      <CornerSplash position="contact-left" color="blue" size={160} variant="f" rotate={-35} />
+      <CornerSplash position="contact-right" color="orange" size={140} variant="d" rotate={15} />
       <div ref={ref} className={`section__inner contact fade-scroll${visible ? ' fade-scroll--visible' : ''}`}>
         <div className="contact__text">
           <h2 className="section__title">

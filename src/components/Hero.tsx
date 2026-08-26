@@ -9,12 +9,14 @@ export function Hero() {
     <section id="top" className="hero">
       <CornerSplash position="hero-tl" color="blue" size={680} variant="a" rotate={-8} />
       <CornerSplash position="hero-br" color="orange" size={610} variant="b" rotate={16} />
-      <CornerSplash position="hero-tr" color="orange" size={300} variant="c" rotate={28} />
-      <CornerSplash position="hero-bl" color="blue" size={380} variant="b" rotate={-22} />
-      <CornerSplash position="hero-top" color="orange" size={230} variant="a" rotate={45} />
+      <CornerSplash position="hero-tr" color="orange" size={300} variant="d" rotate={28} />
+      <CornerSplash position="hero-bl" color="blue" size={380} variant="e" rotate={-22} />
+      <CornerSplash position="hero-top" color="orange" size={230} variant="f" rotate={45} />
       <CornerSplash position="hero-bottom" color="blue" size={290} variant="c" rotate={-38} />
       <CornerSplash position="hero-left" color="orange" size={210} variant="b" rotate={-30} />
-      <CornerSplash position="hero-right" color="blue" size={240} variant="c" rotate={40} />
+      <CornerSplash position="hero-right" color="blue" size={240} variant="d" rotate={40} />
+      <CornerSplash position="hero-mid-tr" color="blue" size={150} variant="f" rotate={-20} />
+      <CornerSplash position="hero-mid-bl" color="orange" size={170} variant="e" rotate={55} />
       <div className="hero__content">
         <p className="hero__eyebrow">Photographer / Videographer</p>
         <h1 ref={ref} className={`hero__title${visible ? ' hero__title--visible' : ''}`}>
