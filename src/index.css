@@ -6,13 +6,21 @@
   font-display: swap;
 }
 
-/* Registering --sweep as a typed <angle> makes it a smoothly interpolatable custom
-   property: browsers do not reliably tween between two literal gradient() values, but
-   they do tween a registered angle, which the conic-gradient mask below reads directly. */
-@property --sweep {
+/* Registering these as typed custom properties makes them smoothly interpolatable:
+   browsers do not reliably tween between two literal gradient() values, but they do
+   tween a registered percentage/angle, which the wipe mask below reads directly.
+   --wipe is how far the brush has travelled; --wipe-angle is which way it travels
+   (flipped 180deg between cycles so the wiper alternates left-to-right / right-to-left). */
+@property --wipe {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 0%;
+}
+
+@property --wipe-angle {
   syntax: '<angle>';
   inherits: true;
-  initial-value: 0deg;
+  initial-value: 96deg;
 }
 
 :root {
@@ -131,25 +139,64 @@ ul {
   position: absolute;
   z-index: 0;
   pointer-events: none;
-  --sweep: 0deg;
+  --wipe: 0%;
+  --wipe-angle: 96deg;
+  /* Everything ahead of the boundary (--wipe) is still inked; everything behind it has
+     been wiped away. The boundary is not one clean line: nine hard-edged strands of
+     ink trail behind it at uneven widths and spacings, and their opacity grades from
+     almost-solid right at the edge down to barely-there furthest back, so the edge
+     frays and thins like a dry brush (kasure) instead of cutting straight across.
+     --wipe travels to 108%, not 100%, so the longest trailing strand also clears the
+     far edge and the shape ends up fully erased. */
+  --ink-wipe-mask: linear-gradient(
+    var(--wipe-angle),
+    transparent 0%,
+    transparent calc(var(--wipe) - 6.6%),
+    rgba(255, 255, 255, 0.08) calc(var(--wipe) - 6.6%),
+    rgba(255, 255, 255, 0.08) calc(var(--wipe) - 6.3%),
+    transparent calc(var(--wipe) - 6.3%),
+    transparent calc(var(--wipe) - 5.7%),
+    rgba(255, 255, 255, 0.12) calc(var(--wipe) - 5.7%),
+    rgba(255, 255, 255, 0.12) calc(var(--wipe) - 5.5%),
+    transparent calc(var(--wipe) - 5.5%),
+    transparent calc(var(--wipe) - 5.0%),
+    rgba(255, 255, 255, 0.18) calc(var(--wipe) - 5.0%),
+    rgba(255, 255, 255, 0.18) calc(var(--wipe) - 4.4%),
+    transparent calc(var(--wipe) - 4.4%),
+    transparent calc(var(--wipe) - 4.0%),
+    rgba(255, 255, 255, 0.14) calc(var(--wipe) - 4.0%),
+    rgba(255, 255, 255, 0.14) calc(var(--wipe) - 3.8%),
+    transparent calc(var(--wipe) - 3.8%),
+    transparent calc(var(--wipe) - 3.5%),
+    rgba(255, 255, 255, 0.34) calc(var(--wipe) - 3.5%),
+    rgba(255, 255, 255, 0.34) calc(var(--wipe) - 2.9%),
+    transparent calc(var(--wipe) - 2.9%),
+    transparent calc(var(--wipe) - 2.6%),
+    rgba(255, 255, 255, 0.22) calc(var(--wipe) - 2.6%),
+    rgba(255, 255, 255, 0.22) calc(var(--wipe) - 2.4%),
+    transparent calc(var(--wipe) - 2.4%),
+    transparent calc(var(--wipe) - 2.1%),
+    rgba(255, 255, 255, 0.5) calc(var(--wipe) - 2.1%),
+    rgba(255, 255, 255, 0.5) calc(var(--wipe) - 1.5%),
+    transparent calc(var(--wipe) - 1.5%),
+    transparent calc(var(--wipe) - 1.3%),
+    rgba(255, 255, 255, 0.38) calc(var(--wipe) - 1.3%),
+    rgba(255, 255, 255, 0.38) calc(var(--wipe) - 1.1%),
+    transparent calc(var(--wipe) - 1.1%),
+    transparent calc(var(--wipe) - 0.9%),
+    rgba(255, 255, 255, 0.68) calc(var(--wipe) - 0.9%),
+    rgba(255, 255, 255, 0.68) calc(var(--wipe) - 0.4%),
+    transparent calc(var(--wipe) - 0.4%),
+    transparent calc(var(--wipe) - 0.2%),
+    #fff calc(var(--wipe) - 0.2%),
+    #fff 100%
+  );
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   -webkit-mask-size: 100% 100%;
   mask-size: 100% 100%;
-  -webkit-mask-image: conic-gradient(
-    from 0deg at 0% 100%,
-    transparent 0deg,
-    transparent var(--sweep),
-    #fff var(--sweep),
-    #fff 360deg
-  );
-  mask-image: conic-gradient(
-    from 0deg at 0% 100%,
-    transparent 0deg,
-    transparent var(--sweep),
-    #fff var(--sweep),
-    #fff 360deg
-  );
+  -webkit-mask-image: var(--ink-wipe-mask);
+  mask-image: var(--ink-wipe-mask);
 }
 
 .corner-splash--about {
@@ -356,7 +403,8 @@ ul {
 @media (prefers-reduced-motion: no-preference) {
   .corner-splash {
     animation-name: ink-cycle-diagonal;
-    animation-duration: 5.9s;
+    /* Two ink lifetimes per cycle (one wiped each way), 5.9s each. */
+    animation-duration: 11.8s;
     animation-delay: 0s;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
@@ -416,43 +464,98 @@ ul {
   }
 }
 
-/* The wipe erases like a windshield wiper: pivoted at the bottom-left corner (via the
-   conic-gradient's "at 0% 100%" origin on .corner-splash), the blade starts pointing
-   straight up and sweeps clockwise to pointing right, wiping the whole shape in one
-   continuous 90° arc — driven by --sweep (registered above as a typed <angle>, so
-   browsers genuinely tween it instead of snapping). Once fully erased it fades out and
-   stays blank for about 0.7s (of the 5.9s cycle) before the loop wraps and the ink
-   splats back in. */
+/* One cycle holds two ink lifetimes so the wiper alternates direction: the first half
+   splats the ink and wipes it left-to-right (--wipe-angle 96deg), the second half splats
+   it again and wipes right-to-left (276deg, the same sweep flipped 180deg). Each wipe is
+   monotonic — the brush only ever moves forward, so already-cleared ink never comes back
+   and the shape does not flicker. The direction flip happens at the 50% mark, while the
+   splash is fully transparent between lifetimes, so it is never seen.
+
+   Within each half the ink splats in, holds, gets wiped, fades out, then stays blank for
+   about 0.7s before the next lifetime begins. --wipe travels 0% -> 108%: the extra 8%
+   is what carries the trailing dry-brush strands (see .corner-splash) off the far edge. */
 @keyframes ink-cycle-diagonal {
+  /* --- first lifetime: wiped left-to-right --- */
   0% {
     opacity: 0;
     transform: scale(0.5);
-    --sweep: 0deg;
+    --wipe: 0%;
+    --wipe-angle: 96deg;
   }
-  5% {
+  2.5% {
     opacity: 1;
     transform: scale(1.1);
-    --sweep: 0deg;
+    --wipe: 0%;
+    --wipe-angle: 96deg;
   }
-  7%,
-  55% {
+  3.5% {
     opacity: 1;
     transform: scale(1);
-    --sweep: 0deg;
+    --wipe: 0%;
+    --wipe-angle: 96deg;
+    /* Explicitly linear so the splat-in easing cannot bleed into the hold or the wipe. */
+    animation-timing-function: linear;
+  }
+  27.5% {
+    opacity: 1;
+    transform: scale(1);
+    --wipe: 0%;
+    --wipe-angle: 96deg;
     animation-timing-function: ease-in-out;
   }
-  68% {
-    /* The wiper sweeps across the ink in one arc, fully erased. */
+  34% {
     opacity: 1;
     transform: scale(1);
-    --sweep: 90deg;
-    animation-timing-function: ease-out;
+    --wipe: 108%;
+    --wipe-angle: 96deg;
   }
-  74%,
+  37%,
+  49.9% {
+    opacity: 0;
+    transform: scale(0.5);
+    --wipe: 108%;
+    --wipe-angle: 96deg;
+  }
+
+  /* --- second lifetime: wiped right-to-left --- */
+  50% {
+    opacity: 0;
+    transform: scale(0.5);
+    --wipe: 0%;
+    --wipe-angle: 276deg;
+  }
+  52.5% {
+    opacity: 1;
+    transform: scale(1.1);
+    --wipe: 0%;
+    --wipe-angle: 276deg;
+  }
+  53.5% {
+    opacity: 1;
+    transform: scale(1);
+    --wipe: 0%;
+    --wipe-angle: 276deg;
+    animation-timing-function: linear;
+  }
+  77.5% {
+    opacity: 1;
+    transform: scale(1);
+    --wipe: 0%;
+    --wipe-angle: 276deg;
+    animation-timing-function: ease-in-out;
+  }
+  84% {
+    opacity: 1;
+    transform: scale(1);
+    --wipe: 108%;
+    --wipe-angle: 276deg;
+  }
+  87%,
   100% {
     opacity: 0;
     transform: scale(0.5);
-    --sweep: 90deg;
+    --wipe: 108%;
+    --wipe-angle: 276deg;
   }
 }
 
