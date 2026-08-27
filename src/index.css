@@ -632,14 +632,22 @@ ul {
    Within a lifetime's wipe window the bands fire top to bottom, alternating direction
    each time (band0 left-to-right, band1 right-to-left, band2 left-to-right again), so a
    single erase reads as 3 passes moving left-right-left while working down the shape.
-   Each pass starts before the one above it has quite finished — the windows overlap by
-   about a quarter — so the boundary hands off from the end of one pass to the start of
+   Each pass starts before the one above it has quite finished -- the windows overlap by
+   about a quarter -- so the boundary hands off from the end of one pass to the start of
    the next and the three read as one continuous serpentine stroke rather than three
-   slabs blinking out in turn. Every wipe is monotonic — the brush only ever moves
+   slabs blinking out in turn. Every wipe is monotonic -- the brush only ever moves
    forward, so already-cleared ink never comes back and the shape does not flicker.
    Each --wipeN travels 0% -> 108%: the extra 8% is what carries the trailing dry-brush
-   strands (see .corner-splash) off the far edge. All of it happens while the splash is
-   fully transparent between lifetimes, so the reset to the next lifetime is never seen. */
+   strands (see .corner-splash) off the far edge.
+
+   The wipe itself now runs longer (8 of the lifetime's 25 points, versus 5 before) so
+   the sweep reads as a smooth, unhurried motion instead of a quick flick; the hold
+   before it and the blank pause after are both shorter to make room, so the whole
+   lifetime is still the same 5.9s. Once the shape is fully wiped and faded, the blank
+   gap before the next lifetime's ink splats back in is now only about 0.085s (24.95%
+   to 25%, i.e. right up to the wrap) -- down from roughly 0.3s -- so the reappearance
+   feels quick without the reset ever being visible (it happens while fully
+   transparent, same as before). */
 @keyframes ink-cycle-diagonal {
   /* --- lifetime 1 --- */
   0% {
@@ -655,16 +663,16 @@ ul {
     transform: scale(1);
     animation-timing-function: linear;
   }
-  13.75% {
+  14.75% {
     opacity: 1;
     transform: scale(1);
     animation-timing-function: linear;
   }
-  18.75% {
+  22.75% {
     opacity: 1;
     transform: scale(1);
   }
-  19.5% {
+  23.5% {
     opacity: 0;
     transform: scale(0.5);
   }
@@ -687,16 +695,16 @@ ul {
     transform: scale(1);
     animation-timing-function: linear;
   }
-  38.75% {
+  39.75% {
     opacity: 1;
     transform: scale(1);
     animation-timing-function: linear;
   }
-  43.75% {
+  47.75% {
     opacity: 1;
     transform: scale(1);
   }
-  44.5% {
+  48.5% {
     opacity: 0;
     transform: scale(0.5);
   }
@@ -719,16 +727,16 @@ ul {
     transform: scale(1);
     animation-timing-function: linear;
   }
-  63.75% {
+  64.75% {
     opacity: 1;
     transform: scale(1);
     animation-timing-function: linear;
   }
-  68.75% {
+  72.75% {
     opacity: 1;
     transform: scale(1);
   }
-  69.5% {
+  73.5% {
     opacity: 0;
     transform: scale(0.5);
   }
@@ -751,16 +759,16 @@ ul {
     transform: scale(1);
     animation-timing-function: linear;
   }
-  88.75% {
+  89.75% {
     opacity: 1;
     transform: scale(1);
     animation-timing-function: linear;
   }
-  93.75% {
+  97.75% {
     opacity: 1;
     transform: scale(1);
   }
-  94.5% {
+  98.5% {
     opacity: 0;
     transform: scale(0.5);
   }
@@ -776,12 +784,12 @@ ul {
     --wipe0: 0%;
     --wipe-angle0: 60deg;
   }
-  13.75% {
+  14.75% {
     --wipe0: 0%;
     --wipe-angle0: 60deg;
     animation-timing-function: ease-in-out;
   }
-  15.75% {
+  17.95% {
     --wipe0: 108%;
     --wipe-angle0: 60deg;
   }
@@ -795,12 +803,12 @@ ul {
     --wipe0: 0%;
     --wipe-angle0: 60deg;
   }
-  38.75% {
+  39.75% {
     --wipe0: 0%;
     --wipe-angle0: 60deg;
     animation-timing-function: ease-in-out;
   }
-  40.75% {
+  42.95% {
     --wipe0: 108%;
     --wipe-angle0: 60deg;
   }
@@ -814,12 +822,12 @@ ul {
     --wipe0: 0%;
     --wipe-angle0: 60deg;
   }
-  63.75% {
+  64.75% {
     --wipe0: 0%;
     --wipe-angle0: 60deg;
     animation-timing-function: ease-in-out;
   }
-  65.75% {
+  67.95% {
     --wipe0: 108%;
     --wipe-angle0: 60deg;
   }
@@ -833,12 +841,12 @@ ul {
     --wipe0: 0%;
     --wipe-angle0: 60deg;
   }
-  88.75% {
+  89.75% {
     --wipe0: 0%;
     --wipe-angle0: 60deg;
     animation-timing-function: ease-in-out;
   }
-  90.75% {
+  92.95% {
     --wipe0: 108%;
     --wipe-angle0: 60deg;
   }
@@ -854,12 +862,12 @@ ul {
     --wipe1: 0%;
     --wipe-angle1: 240deg;
   }
-  15.25% {
+  17.15% {
     --wipe1: 0%;
     --wipe-angle1: 240deg;
     animation-timing-function: ease-in-out;
   }
-  17.25% {
+  20.35% {
     --wipe1: 108%;
     --wipe-angle1: 240deg;
   }
@@ -873,12 +881,12 @@ ul {
     --wipe1: 0%;
     --wipe-angle1: 240deg;
   }
-  40.25% {
+  42.15% {
     --wipe1: 0%;
     --wipe-angle1: 240deg;
     animation-timing-function: ease-in-out;
   }
-  42.25% {
+  45.35% {
     --wipe1: 108%;
     --wipe-angle1: 240deg;
   }
@@ -892,12 +900,12 @@ ul {
     --wipe1: 0%;
     --wipe-angle1: 240deg;
   }
-  65.25% {
+  67.15% {
     --wipe1: 0%;
     --wipe-angle1: 240deg;
     animation-timing-function: ease-in-out;
   }
-  67.25% {
+  70.35% {
     --wipe1: 108%;
     --wipe-angle1: 240deg;
   }
@@ -911,12 +919,12 @@ ul {
     --wipe1: 0%;
     --wipe-angle1: 240deg;
   }
-  90.25% {
+  92.15% {
     --wipe1: 0%;
     --wipe-angle1: 240deg;
     animation-timing-function: ease-in-out;
   }
-  92.25% {
+  95.35% {
     --wipe1: 108%;
     --wipe-angle1: 240deg;
   }
@@ -932,12 +940,12 @@ ul {
     --wipe2: 0%;
     --wipe-angle2: 60deg;
   }
-  16.75% {
+  19.55% {
     --wipe2: 0%;
     --wipe-angle2: 60deg;
     animation-timing-function: ease-in-out;
   }
-  18.75% {
+  22.75% {
     --wipe2: 108%;
     --wipe-angle2: 60deg;
   }
@@ -951,12 +959,12 @@ ul {
     --wipe2: 0%;
     --wipe-angle2: 60deg;
   }
-  41.75% {
+  44.55% {
     --wipe2: 0%;
     --wipe-angle2: 60deg;
     animation-timing-function: ease-in-out;
   }
-  43.75% {
+  47.75% {
     --wipe2: 108%;
     --wipe-angle2: 60deg;
   }
@@ -970,12 +978,12 @@ ul {
     --wipe2: 0%;
     --wipe-angle2: 60deg;
   }
-  66.75% {
+  69.55% {
     --wipe2: 0%;
     --wipe-angle2: 60deg;
     animation-timing-function: ease-in-out;
   }
-  68.75% {
+  72.75% {
     --wipe2: 108%;
     --wipe-angle2: 60deg;
   }
@@ -989,12 +997,12 @@ ul {
     --wipe2: 0%;
     --wipe-angle2: 60deg;
   }
-  91.75% {
+  94.55% {
     --wipe2: 0%;
     --wipe-angle2: 60deg;
     animation-timing-function: ease-in-out;
   }
-  93.75% {
+  97.75% {
     --wipe2: 108%;
     --wipe-angle2: 60deg;
   }
