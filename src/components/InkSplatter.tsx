@@ -104,24 +104,6 @@ export function InkSplatterDefs() {
           <circle cx="-38" cy="14" r="1.4" />
           <circle cx="24" cy="30" r="1.5" />
         </g>
-        {/* Splits every ink shape into 3 horizontal bands (shared -145..145 viewBox
-            coordinate space) so the erase can wipe each band independently: top, then
-            middle, then bottom, alternating direction as it works down the shape.
-            The splits are at y=-20/+20 rather than at even thirds of the viewBox,
-            because the ink blob only spans roughly the middle ±70 of that box — even
-            thirds would leave the top and bottom bands nearly empty and let the middle
-            band wipe the whole shape at once. These cuts give each band a real share of
-            the ink; the outer two still reach the viewBox edge so stray dots and
-            satellites are erased too. */}
-        <clipPath id="ink-band-clip-0" clipPathUnits="userSpaceOnUse">
-          <rect x="-145" y="-145" width="290" height="125" />
-        </clipPath>
-        <clipPath id="ink-band-clip-1" clipPathUnits="userSpaceOnUse">
-          <rect x="-145" y="-20" width="290" height="40" />
-        </clipPath>
-        <clipPath id="ink-band-clip-2" clipPathUnits="userSpaceOnUse">
-          <rect x="-145" y="20" width="290" height="125" />
-        </clipPath>
       </defs>
     </svg>
   )
@@ -287,16 +269,9 @@ export function CornerSplash({ position, color, size = 220, variant = 'a', rotat
       viewBox="-145 -145 290 290"
       aria-hidden="true"
     >
-      {/* Each ink shape is drawn 3 times, once per horizontal band, each clipped to its
-          own third and wiped independently (see .ink-wipe-band in index.css) so a single
-          erase reads as 3 passes moving left-right-left while working down the shape. */}
-      {[0, 1, 2].map((band) => (
-        <g key={band} className={`ink-wipe-band ink-wipe-band--${band}`} clipPath={`url(#ink-band-clip-${band})`}>
-          {cycle.map((v, i) => (
-            <g className={`ink-splash-slot ink-splash-slot--${i}`} key={v}>
-              <InkSplash x={0} y={0} color={color} variant={v} rotate={rotate} />
-            </g>
-          ))}
+      {cycle.map((v, i) => (
+        <g className={`ink-splash-slot ink-splash-slot--${i}`} key={v}>
+          <InkSplash x={0} y={0} color={color} variant={v} rotate={rotate} />
         </g>
       ))}
     </svg>
