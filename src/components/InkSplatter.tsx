@@ -240,6 +240,17 @@ export function InkSplash({
   )
 }
 
+const VARIANT_ORDER: InkVariant[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
+// Offsets (distinct mod 10) used to pick 4 well-spread variants for a given starting
+// letter, so each splash cycles through a small set of noticeably different shapes
+// instead of redrawing the same one every time it reappears.
+const CYCLE_OFFSETS = [0, 3, 5, 8]
+
+function cycleVariants(base: InkVariant): InkVariant[] {
+  const startIndex = VARIANT_ORDER.indexOf(base)
+  return CYCLE_OFFSETS.map((offset) => VARIANT_ORDER[(startIndex + offset) % VARIANT_ORDER.length])
+}
+
 type CornerSplashProps = {
   position: string
   color: 'blue' | 'orange'
@@ -249,6 +260,7 @@ type CornerSplashProps = {
 }
 
 export function CornerSplash({ position, color, size = 220, variant = 'a', rotate = 0 }: CornerSplashProps) {
+  const cycle = cycleVariants(variant)
   return (
     <svg
       className={`corner-splash corner-splash--${position}`}
@@ -257,7 +269,11 @@ export function CornerSplash({ position, color, size = 220, variant = 'a', rotat
       viewBox="-145 -145 290 290"
       aria-hidden="true"
     >
-      <InkSplash x={0} y={0} color={color} variant={variant} rotate={rotate} />
+      {cycle.map((v, i) => (
+        <g className={`ink-splash-slot ink-splash-slot--${i}`} key={v}>
+          <InkSplash x={0} y={0} color={color} variant={v} rotate={rotate} />
+        </g>
+      ))}
     </svg>
   )
 }

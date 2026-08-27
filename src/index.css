@@ -127,6 +127,19 @@ ul {
   opacity: 0.85;
 }
 
+/* Each corner-splash stacks 4 ink-splash-slot children, one per variant in its cycle.
+   Only one is opaque at a time (see the ink-slot-N keyframes, driven in lock-step with
+   ink-cycle-diagonal's 4 lifetimes) so the visible shape changes every time the ink
+   reappears. Without motion, only slot 0 renders, matching the static ink-cycle-diagonal
+   fallback state below. */
+.ink-splash-slot {
+  opacity: 0;
+}
+
+.ink-splash-slot--0 {
+  opacity: 1;
+}
+
 .ink-splash--blue {
   fill: var(--color-blue);
 }
@@ -403,11 +416,27 @@ ul {
 @media (prefers-reduced-motion: no-preference) {
   .corner-splash {
     animation-name: ink-cycle-diagonal;
-    /* Two ink lifetimes per cycle (one wiped each way), 5.9s each. */
-    animation-duration: 11.8s;
+    /* Four ink lifetimes per cycle (pattern + wipe direction both change each time), 5.9s each. */
+    animation-duration: 23.6s;
     animation-delay: 0s;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
+  }
+
+  .ink-splash-slot--0 {
+    animation: ink-slot-0 23.6s linear infinite;
+  }
+
+  .ink-splash-slot--1 {
+    animation: ink-slot-1 23.6s linear infinite;
+  }
+
+  .ink-splash-slot--2 {
+    animation: ink-slot-2 23.6s linear infinite;
+  }
+
+  .ink-splash-slot--3 {
+    animation: ink-slot-3 23.6s linear infinite;
   }
 
   .hero__eyebrow {
@@ -464,98 +493,241 @@ ul {
   }
 }
 
-/* One cycle holds two ink lifetimes so the wiper alternates direction: the first half
-   splats the ink and wipes it left-to-right (--wipe-angle 96deg), the second half splats
-   it again and wipes right-to-left (276deg, the same sweep flipped 180deg). Each wipe is
-   monotonic — the brush only ever moves forward, so already-cleared ink never comes back
-   and the shape does not flicker. The direction flip happens at the 50% mark, while the
-   splash is fully transparent between lifetimes, so it is never seen.
+/* One full cycle holds four ink lifetimes, each showing a different ink-splash-slot
+   child (see .ink-splash-slot below) so the pattern changes every time the ink
+   reappears, not just its wipe direction. The wiper direction still alternates
+   left-to-right / right-to-left each lifetime (--wipe-angle flips 96deg <-> 276deg),
+   and stays a clean alternation across the loop seam because four is even. The flip
+   and the pattern swap both happen while the splash is fully transparent, so neither
+   is ever seen. Each wipe is monotonic — the brush only ever moves forward, so
+   already-cleared ink never comes back and the shape does not flicker.
 
-   Within each half the ink splats in, holds, gets wiped, fades out, then stays blank for
-   about 0.7s before the next lifetime begins. --wipe travels 0% -> 108%: the extra 8%
-   is what carries the trailing dry-brush strands (see .corner-splash) off the far edge. */
+   Within each lifetime the ink splats in, holds, gets wiped, fades out, then stays
+   blank for a beat before the next lifetime begins. --wipe travels 0% -> 108%: the
+   extra 8% is what carries the trailing dry-brush strands (see .corner-splash) off
+   the far edge. */
 @keyframes ink-cycle-diagonal {
-  /* --- first lifetime: wiped left-to-right --- */
+  /* --- lifetime 1: wiped left-to-right --- */
   0% {
     opacity: 0;
     transform: scale(0.5);
     --wipe: 0%;
     --wipe-angle: 96deg;
   }
-  2.5% {
+  1.25% {
     opacity: 1;
     transform: scale(1.1);
     --wipe: 0%;
     --wipe-angle: 96deg;
   }
-  3.5% {
+  1.75% {
     opacity: 1;
     transform: scale(1);
     --wipe: 0%;
     --wipe-angle: 96deg;
-    /* Explicitly linear so the splat-in easing cannot bleed into the hold or the wipe. */
     animation-timing-function: linear;
   }
-  27.5% {
+  13.75% {
     opacity: 1;
     transform: scale(1);
     --wipe: 0%;
     --wipe-angle: 96deg;
     animation-timing-function: ease-in-out;
   }
-  34% {
+  17% {
     opacity: 1;
     transform: scale(1);
     --wipe: 108%;
     --wipe-angle: 96deg;
   }
-  37%,
-  49.9% {
+  18.5%,
+  24.95% {
     opacity: 0;
     transform: scale(0.5);
     --wipe: 108%;
     --wipe-angle: 96deg;
   }
 
-  /* --- second lifetime: wiped right-to-left --- */
-  50% {
+  /* --- lifetime 2: wiped right-to-left --- */
+  25% {
     opacity: 0;
     transform: scale(0.5);
     --wipe: 0%;
     --wipe-angle: 276deg;
   }
-  52.5% {
+  26.25% {
     opacity: 1;
     transform: scale(1.1);
     --wipe: 0%;
     --wipe-angle: 276deg;
   }
-  53.5% {
+  26.75% {
     opacity: 1;
     transform: scale(1);
     --wipe: 0%;
     --wipe-angle: 276deg;
     animation-timing-function: linear;
   }
-  77.5% {
+  38.75% {
     opacity: 1;
     transform: scale(1);
     --wipe: 0%;
     --wipe-angle: 276deg;
     animation-timing-function: ease-in-out;
   }
-  84% {
+  42% {
     opacity: 1;
     transform: scale(1);
     --wipe: 108%;
     --wipe-angle: 276deg;
   }
-  87%,
+  43.5%,
+  49.95% {
+    opacity: 0;
+    transform: scale(0.5);
+    --wipe: 108%;
+    --wipe-angle: 276deg;
+  }
+
+  /* --- lifetime 3: wiped left-to-right --- */
+  50% {
+    opacity: 0;
+    transform: scale(0.5);
+    --wipe: 0%;
+    --wipe-angle: 96deg;
+  }
+  51.25% {
+    opacity: 1;
+    transform: scale(1.1);
+    --wipe: 0%;
+    --wipe-angle: 96deg;
+  }
+  51.75% {
+    opacity: 1;
+    transform: scale(1);
+    --wipe: 0%;
+    --wipe-angle: 96deg;
+    animation-timing-function: linear;
+  }
+  63.75% {
+    opacity: 1;
+    transform: scale(1);
+    --wipe: 0%;
+    --wipe-angle: 96deg;
+    animation-timing-function: ease-in-out;
+  }
+  67% {
+    opacity: 1;
+    transform: scale(1);
+    --wipe: 108%;
+    --wipe-angle: 96deg;
+  }
+  68.5%,
+  74.95% {
+    opacity: 0;
+    transform: scale(0.5);
+    --wipe: 108%;
+    --wipe-angle: 96deg;
+  }
+
+  /* --- lifetime 4: wiped right-to-left --- */
+  75% {
+    opacity: 0;
+    transform: scale(0.5);
+    --wipe: 0%;
+    --wipe-angle: 276deg;
+  }
+  76.25% {
+    opacity: 1;
+    transform: scale(1.1);
+    --wipe: 0%;
+    --wipe-angle: 276deg;
+  }
+  76.75% {
+    opacity: 1;
+    transform: scale(1);
+    --wipe: 0%;
+    --wipe-angle: 276deg;
+    animation-timing-function: linear;
+  }
+  88.75% {
+    opacity: 1;
+    transform: scale(1);
+    --wipe: 0%;
+    --wipe-angle: 276deg;
+    animation-timing-function: ease-in-out;
+  }
+  92% {
+    opacity: 1;
+    transform: scale(1);
+    --wipe: 108%;
+    --wipe-angle: 276deg;
+  }
+  93.5%,
   100% {
     opacity: 0;
     transform: scale(0.5);
     --wipe: 108%;
     --wipe-angle: 276deg;
+  }
+}
+
+/* One keyframes block per slot: each holds opacity 1 for exactly the quarter of the
+   cycle its matching ink-cycle-diagonal lifetime owns, 0 otherwise, switching at the
+   same lifetime boundaries (with the same near-instant epsilon trick) so the swap is
+   never seen mid-fade. */
+@keyframes ink-slot-0 {
+  0%,
+  24.9% {
+    opacity: 1;
+  }
+  25%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ink-slot-1 {
+  0%,
+  24.9% {
+    opacity: 0;
+  }
+  25%,
+  49.9% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ink-slot-2 {
+  0%,
+  49.9% {
+    opacity: 0;
+  }
+  50%,
+  74.9% {
+    opacity: 1;
+  }
+  75%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ink-slot-3 {
+  0%,
+  74.9% {
+    opacity: 0;
+  }
+  75%,
+  99.9% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
 
