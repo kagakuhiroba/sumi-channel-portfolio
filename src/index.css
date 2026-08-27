@@ -152,15 +152,19 @@ ul {
   position: absolute;
   z-index: 0;
   pointer-events: none;
+}
+
+/* Each of the 3 bands (see clipPath in InkSplatter.tsx) wipes independently, driven by
+   its own --wipe/--wipe-angle. Everything ahead of the boundary (--wipe) is still
+   inked; everything behind it has been wiped away. The boundary is not one clean line:
+   nine hard-edged strands of ink trail behind it at uneven widths and spacings, and
+   their opacity grades from almost-solid right at the edge down to barely-there
+   furthest back, so the edge frays and thins like a dry brush (kasure) instead of
+   cutting straight across. --wipe travels to 108%, not 100%, so the longest trailing
+   strand also clears the far edge and the band ends up fully erased. */
+.ink-wipe-band {
   --wipe: 0%;
   --wipe-angle: 96deg;
-  /* Everything ahead of the boundary (--wipe) is still inked; everything behind it has
-     been wiped away. The boundary is not one clean line: nine hard-edged strands of
-     ink trail behind it at uneven widths and spacings, and their opacity grades from
-     almost-solid right at the edge down to barely-there furthest back, so the edge
-     frays and thins like a dry brush (kasure) instead of cutting straight across.
-     --wipe travels to 108%, not 100%, so the longest trailing strand also clears the
-     far edge and the shape ends up fully erased. */
   --ink-wipe-mask: linear-gradient(
     var(--wipe-angle),
     transparent 0%,
@@ -416,7 +420,7 @@ ul {
 @media (prefers-reduced-motion: no-preference) {
   .corner-splash {
     animation-name: ink-cycle-diagonal;
-    /* Four ink lifetimes per cycle (pattern + wipe direction both change each time), 5.9s each. */
+    /* Four ink lifetimes per cycle (pattern changes each time), 5.9s each. */
     animation-duration: 23.6s;
     animation-delay: 0s;
     animation-timing-function: ease-in-out;
@@ -437,6 +441,18 @@ ul {
 
   .ink-splash-slot--3 {
     animation: ink-slot-3 23.6s linear infinite;
+  }
+
+  .ink-wipe-band--0 {
+    animation: ink-band-0 23.6s linear infinite;
+  }
+
+  .ink-wipe-band--1 {
+    animation: ink-band-1 23.6s linear infinite;
+  }
+
+  .ink-wipe-band--2 {
+    animation: ink-band-2 23.6s linear infinite;
   }
 
   .hero__eyebrow {
@@ -495,180 +511,377 @@ ul {
 
 /* One full cycle holds four ink lifetimes, each showing a different ink-splash-slot
    child (see .ink-splash-slot below) so the pattern changes every time the ink
-   reappears, not just its wipe direction. The wiper direction still alternates
-   left-to-right / right-to-left each lifetime (--wipe-angle flips 96deg <-> 276deg),
-   and stays a clean alternation across the loop seam because four is even. The flip
-   and the pattern swap both happen while the splash is fully transparent, so neither
-   is ever seen. Each wipe is monotonic — the brush only ever moves forward, so
-   already-cleared ink never comes back and the shape does not flicker.
-
-   Within each lifetime the ink splats in, holds, gets wiped, fades out, then stays
-   blank for a beat before the next lifetime begins. --wipe travels 0% -> 108%: the
-   extra 8% is what carries the trailing dry-brush strands (see .corner-splash) off
-   the far edge. */
+   reappears. ink-cycle-diagonal only handles the shared envelope (splat-in, hold,
+   fade-out) for the whole splash; the actual erasing is delegated to the 3 ink-band-N
+   keyframes below, one per horizontal band (see the clipPath split in InkSplatter.tsx).
+   Within a lifetime's wipe window the bands fire in sequence, top to bottom, alternating
+   direction each time (band0 left-to-right, band1 right-to-left, band2 left-to-right
+   again) so a single erase reads as 3 passes moving left-right-left while working down
+   the shape. Every wipe is monotonic — the brush only ever moves forward, so
+   already-cleared ink never comes back and the shape does not flicker. --wipe travels
+   0% -> 108%: the extra 8% is what carries the trailing dry-brush strands (see
+   .ink-wipe-band) off the far edge. All of it happens while the splash is fully
+   transparent between lifetimes, so the reset to the next lifetime is never seen. */
 @keyframes ink-cycle-diagonal {
-  /* --- lifetime 1: wiped left-to-right --- */
+  /* --- lifetime 1 --- */
   0% {
     opacity: 0;
     transform: scale(0.5);
-    --wipe: 0%;
-    --wipe-angle: 96deg;
   }
   1.25% {
     opacity: 1;
     transform: scale(1.1);
-    --wipe: 0%;
-    --wipe-angle: 96deg;
   }
   1.75% {
     opacity: 1;
     transform: scale(1);
-    --wipe: 0%;
-    --wipe-angle: 96deg;
     animation-timing-function: linear;
   }
   13.75% {
     opacity: 1;
     transform: scale(1);
-    --wipe: 0%;
-    --wipe-angle: 96deg;
     animation-timing-function: ease-in-out;
   }
-  17% {
+  18.25% {
     opacity: 1;
     transform: scale(1);
-    --wipe: 108%;
-    --wipe-angle: 96deg;
   }
-  18.5%,
+  19% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
   24.95% {
     opacity: 0;
     transform: scale(0.5);
-    --wipe: 108%;
-    --wipe-angle: 96deg;
   }
 
-  /* --- lifetime 2: wiped right-to-left --- */
+  /* --- lifetime 2 --- */
   25% {
     opacity: 0;
     transform: scale(0.5);
-    --wipe: 0%;
-    --wipe-angle: 276deg;
   }
   26.25% {
     opacity: 1;
     transform: scale(1.1);
-    --wipe: 0%;
-    --wipe-angle: 276deg;
   }
   26.75% {
     opacity: 1;
     transform: scale(1);
-    --wipe: 0%;
-    --wipe-angle: 276deg;
     animation-timing-function: linear;
   }
   38.75% {
     opacity: 1;
     transform: scale(1);
-    --wipe: 0%;
-    --wipe-angle: 276deg;
     animation-timing-function: ease-in-out;
   }
-  42% {
+  43.25% {
     opacity: 1;
     transform: scale(1);
-    --wipe: 108%;
-    --wipe-angle: 276deg;
   }
-  43.5%,
+  44% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
   49.95% {
     opacity: 0;
     transform: scale(0.5);
-    --wipe: 108%;
-    --wipe-angle: 276deg;
   }
 
-  /* --- lifetime 3: wiped left-to-right --- */
+  /* --- lifetime 3 --- */
   50% {
     opacity: 0;
     transform: scale(0.5);
-    --wipe: 0%;
-    --wipe-angle: 96deg;
   }
   51.25% {
     opacity: 1;
     transform: scale(1.1);
-    --wipe: 0%;
-    --wipe-angle: 96deg;
   }
   51.75% {
     opacity: 1;
     transform: scale(1);
-    --wipe: 0%;
-    --wipe-angle: 96deg;
     animation-timing-function: linear;
   }
   63.75% {
     opacity: 1;
     transform: scale(1);
-    --wipe: 0%;
-    --wipe-angle: 96deg;
     animation-timing-function: ease-in-out;
   }
-  67% {
+  68.25% {
     opacity: 1;
     transform: scale(1);
-    --wipe: 108%;
-    --wipe-angle: 96deg;
   }
-  68.5%,
+  69% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
   74.95% {
     opacity: 0;
     transform: scale(0.5);
-    --wipe: 108%;
-    --wipe-angle: 96deg;
   }
 
-  /* --- lifetime 4: wiped right-to-left --- */
+  /* --- lifetime 4 --- */
   75% {
     opacity: 0;
     transform: scale(0.5);
-    --wipe: 0%;
-    --wipe-angle: 276deg;
   }
   76.25% {
     opacity: 1;
     transform: scale(1.1);
-    --wipe: 0%;
-    --wipe-angle: 276deg;
   }
   76.75% {
     opacity: 1;
     transform: scale(1);
-    --wipe: 0%;
-    --wipe-angle: 276deg;
     animation-timing-function: linear;
   }
   88.75% {
     opacity: 1;
     transform: scale(1);
+    animation-timing-function: ease-in-out;
+  }
+  93.25% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  94% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+@keyframes ink-band-0 {
+  /* --- lifetime 1 --- */
+  0% {
+    --wipe: 0%;
+    --wipe-angle: 96deg;
+  }
+  13.75% {
+    --wipe: 0%;
+    --wipe-angle: 96deg;
+    animation-timing-function: ease-in-out;
+  }
+  15.25% {
+    --wipe: 108%;
+    --wipe-angle: 96deg;
+  }
+  24.95% {
+    --wipe: 108%;
+    --wipe-angle: 96deg;
+  }
+
+  /* --- lifetime 2 --- */
+  25% {
+    --wipe: 0%;
+    --wipe-angle: 96deg;
+  }
+  38.75% {
+    --wipe: 0%;
+    --wipe-angle: 96deg;
+    animation-timing-function: ease-in-out;
+  }
+  40.25% {
+    --wipe: 108%;
+    --wipe-angle: 96deg;
+  }
+  49.95% {
+    --wipe: 108%;
+    --wipe-angle: 96deg;
+  }
+
+  /* --- lifetime 3 --- */
+  50% {
+    --wipe: 0%;
+    --wipe-angle: 96deg;
+  }
+  63.75% {
+    --wipe: 0%;
+    --wipe-angle: 96deg;
+    animation-timing-function: ease-in-out;
+  }
+  65.25% {
+    --wipe: 108%;
+    --wipe-angle: 96deg;
+  }
+  74.95% {
+    --wipe: 108%;
+    --wipe-angle: 96deg;
+  }
+
+  /* --- lifetime 4 --- */
+  75% {
+    --wipe: 0%;
+    --wipe-angle: 96deg;
+  }
+  88.75% {
+    --wipe: 0%;
+    --wipe-angle: 96deg;
+    animation-timing-function: ease-in-out;
+  }
+  90.25% {
+    --wipe: 108%;
+    --wipe-angle: 96deg;
+  }
+  100% {
+    --wipe: 108%;
+    --wipe-angle: 96deg;
+  }
+}
+
+@keyframes ink-band-1 {
+  /* --- lifetime 1 --- */
+  0% {
+    --wipe: 0%;
+    --wipe-angle: 276deg;
+  }
+  15.25% {
     --wipe: 0%;
     --wipe-angle: 276deg;
     animation-timing-function: ease-in-out;
   }
-  92% {
-    opacity: 1;
-    transform: scale(1);
+  16.75% {
     --wipe: 108%;
     --wipe-angle: 276deg;
   }
-  93.5%,
-  100% {
-    opacity: 0;
-    transform: scale(0.5);
+  24.95% {
     --wipe: 108%;
     --wipe-angle: 276deg;
+  }
+
+  /* --- lifetime 2 --- */
+  25% {
+    --wipe: 0%;
+    --wipe-angle: 276deg;
+  }
+  40.25% {
+    --wipe: 0%;
+    --wipe-angle: 276deg;
+    animation-timing-function: ease-in-out;
+  }
+  41.75% {
+    --wipe: 108%;
+    --wipe-angle: 276deg;
+  }
+  49.95% {
+    --wipe: 108%;
+    --wipe-angle: 276deg;
+  }
+
+  /* --- lifetime 3 --- */
+  50% {
+    --wipe: 0%;
+    --wipe-angle: 276deg;
+  }
+  65.25% {
+    --wipe: 0%;
+    --wipe-angle: 276deg;
+    animation-timing-function: ease-in-out;
+  }
+  66.75% {
+    --wipe: 108%;
+    --wipe-angle: 276deg;
+  }
+  74.95% {
+    --wipe: 108%;
+    --wipe-angle: 276deg;
+  }
+
+  /* --- lifetime 4 --- */
+  75% {
+    --wipe: 0%;
+    --wipe-angle: 276deg;
+  }
+  90.25% {
+    --wipe: 0%;
+    --wipe-angle: 276deg;
+    animation-timing-function: ease-in-out;
+  }
+  91.75% {
+    --wipe: 108%;
+    --wipe-angle: 276deg;
+  }
+  100% {
+    --wipe: 108%;
+    --wipe-angle: 276deg;
+  }
+}
+
+@keyframes ink-band-2 {
+  /* --- lifetime 1 --- */
+  0% {
+    --wipe: 0%;
+    --wipe-angle: 96deg;
+  }
+  16.75% {
+    --wipe: 0%;
+    --wipe-angle: 96deg;
+    animation-timing-function: ease-in-out;
+  }
+  18.25% {
+    --wipe: 108%;
+    --wipe-angle: 96deg;
+  }
+  24.95% {
+    --wipe: 108%;
+    --wipe-angle: 96deg;
+  }
+
+  /* --- lifetime 2 --- */
+  25% {
+    --wipe: 0%;
+    --wipe-angle: 96deg;
+  }
+  41.75% {
+    --wipe: 0%;
+    --wipe-angle: 96deg;
+    animation-timing-function: ease-in-out;
+  }
+  43.25% {
+    --wipe: 108%;
+    --wipe-angle: 96deg;
+  }
+  49.95% {
+    --wipe: 108%;
+    --wipe-angle: 96deg;
+  }
+
+  /* --- lifetime 3 --- */
+  50% {
+    --wipe: 0%;
+    --wipe-angle: 96deg;
+  }
+  66.75% {
+    --wipe: 0%;
+    --wipe-angle: 96deg;
+    animation-timing-function: ease-in-out;
+  }
+  68.25% {
+    --wipe: 108%;
+    --wipe-angle: 96deg;
+  }
+  74.95% {
+    --wipe: 108%;
+    --wipe-angle: 96deg;
+  }
+
+  /* --- lifetime 4 --- */
+  75% {
+    --wipe: 0%;
+    --wipe-angle: 96deg;
+  }
+  91.75% {
+    --wipe: 0%;
+    --wipe-angle: 96deg;
+    animation-timing-function: ease-in-out;
+  }
+  93.25% {
+    --wipe: 108%;
+    --wipe-angle: 96deg;
+  }
+  100% {
+    --wipe: 108%;
+    --wipe-angle: 96deg;
   }
 }
 

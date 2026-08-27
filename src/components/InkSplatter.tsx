@@ -104,6 +104,18 @@ export function InkSplatterDefs() {
           <circle cx="-38" cy="14" r="1.4" />
           <circle cx="24" cy="30" r="1.5" />
         </g>
+        {/* Splits every ink shape into 3 equal horizontal thirds (shared -145..145 viewBox
+            coordinate space) so the erase can wipe each band independently: top, then
+            middle, then bottom, alternating direction as it works down the shape. */}
+        <clipPath id="ink-band-clip-0" clipPathUnits="userSpaceOnUse">
+          <rect x="-145" y="-145" width="290" height="96.67" />
+        </clipPath>
+        <clipPath id="ink-band-clip-1" clipPathUnits="userSpaceOnUse">
+          <rect x="-145" y="-48.33" width="290" height="96.67" />
+        </clipPath>
+        <clipPath id="ink-band-clip-2" clipPathUnits="userSpaceOnUse">
+          <rect x="-145" y="48.33" width="290" height="96.67" />
+        </clipPath>
       </defs>
     </svg>
   )
@@ -269,9 +281,16 @@ export function CornerSplash({ position, color, size = 220, variant = 'a', rotat
       viewBox="-145 -145 290 290"
       aria-hidden="true"
     >
-      {cycle.map((v, i) => (
-        <g className={`ink-splash-slot ink-splash-slot--${i}`} key={v}>
-          <InkSplash x={0} y={0} color={color} variant={v} rotate={rotate} />
+      {/* Each ink shape is drawn 3 times, once per horizontal band, each clipped to its
+          own third and wiped independently (see .ink-wipe-band in index.css) so a single
+          erase reads as 3 passes moving left-right-left while working down the shape. */}
+      {[0, 1, 2].map((band) => (
+        <g key={band} className={`ink-wipe-band ink-wipe-band--${band}`} clipPath={`url(#ink-band-clip-${band})`}>
+          {cycle.map((v, i) => (
+            <g className={`ink-splash-slot ink-splash-slot--${i}`} key={v}>
+              <InkSplash x={0} y={0} color={color} variant={v} rotate={rotate} />
+            </g>
+          ))}
         </g>
       ))}
     </svg>
