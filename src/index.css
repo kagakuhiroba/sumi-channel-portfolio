@@ -156,15 +156,16 @@ ul {
   fill: var(--color-orange);
 }
 
-/* Each band's wiper blade pivots at a fixed corner and sweeps in an arc rather than
-   travelling in a straight line, so the erase boundary genuinely curves as it moves
-   across the shape instead of just tilting a flat edge (compare the earlier
-   linear-gradient version, which read as a straight diagonal wipe no matter the angle).
-   Bands 0 and 2 pivot at the bottom-left of their own third and start pointing straight
-   up, sweeping clockwise; band 1 pivots at the bottom-right and starts pointing left,
-   also sweeping clockwise -- the mirrored pivot is what makes the middle pass read as
-   the opposite direction from the two around it. --wipeN is simply how far each blade
-   has swung, in degrees: 90deg exactly covers that corner's interior right angle (i.e.
+/* Each band's wiper blade pivots at the same fixed corner (bottom-left of its own
+   third) and sweeps in an arc rather than travelling in a straight line, so the erase
+   boundary genuinely curves as it moves across the shape instead of just tilting a
+   flat edge (compare the earlier linear-gradient version, which read as a straight
+   diagonal wipe no matter the angle). All 3 bands start pointing straight up and sweep
+   clockwise, so each one clears left-to-right on its own; combined with the bands
+   firing top to bottom (see ink-wipe-0/1/2's stagger below), the whole splash reads as
+   one arcing sweep moving left-to-right and top-to-bottom, not an alternating
+   left-right zigzag. --wipeN is simply how far each blade has swung, in degrees: 90deg
+   exactly covers that corner's interior right angle (i.e.
    the whole band), and it travels to 100deg so the last few degrees of overshoot carry
    the trailing dry-brush strands (below) past the edge the same way the old --wipe's
    extra 8% did. The boundary is not one clean line: nine hard-edged strands of ink
@@ -230,7 +231,7 @@ ul {
     #fff 360deg
   );
   --ink-wipe-mask-1: conic-gradient(
-    from -90deg at 100% 100%,
+    from 0deg at 0% 100%,
     transparent 0deg,
     transparent calc(var(--wipe1) - 6.6deg),
     rgba(255, 255, 255, 0.08) calc(var(--wipe1) - 6.6deg),
