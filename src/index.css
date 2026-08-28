@@ -8,41 +8,27 @@
 
 /* Registering these as typed custom properties makes them smoothly interpolatable:
    browsers do not reliably tween between two literal gradient() values, but they do
-   tween a registered percentage/angle, which the wipe mask below reads directly.
-   --wipeN is how far band N's brush has travelled; --wipe-angleN is which way it
-   travels. There are 3 independent pairs (bands 0/1/2 = top/middle/bottom) because
-   each band wipes on its own schedule and in its own direction (see .corner-splash's
-   3-layer mask below) so a single erase reads as 3 passes moving left-right-left
-   while working down the shape. */
+   tween a registered angle, which the wipe mask below reads directly. --wipeN is how
+   far band N's wiper blade has swung, in degrees. There are 3 independent properties
+   (bands 0/1/2 = top/middle/bottom) because each band wipes on its own schedule (see
+   .corner-splash's 3-layer conic-gradient mask below), so a single erase reads as 3
+   arcing wiper strokes working down the shape. Each band's pivot corner and starting
+   angle are baked directly into its own conic-gradient (not stored in a variable, since
+   they never change), so --wipeN alone is enough to drive the whole sweep. */
 @property --wipe0 {
-  syntax: '<percentage>';
+  syntax: '<angle>';
   inherits: true;
-  initial-value: 0%;
+  initial-value: 0deg;
 }
 @property --wipe1 {
-  syntax: '<percentage>';
+  syntax: '<angle>';
   inherits: true;
-  initial-value: 0%;
+  initial-value: 0deg;
 }
 @property --wipe2 {
-  syntax: '<percentage>';
-  inherits: true;
-  initial-value: 0%;
-}
-@property --wipe-angle0 {
   syntax: '<angle>';
   inherits: true;
-  initial-value: 96deg;
-}
-@property --wipe-angle1 {
-  syntax: '<angle>';
-  inherits: true;
-  initial-value: 96deg;
-}
-@property --wipe-angle2 {
-  syntax: '<angle>';
-  inherits: true;
-  initial-value: 96deg;
+  initial-value: 0deg;
 }
 
 :root {
@@ -170,164 +156,164 @@ ul {
   fill: var(--color-orange);
 }
 
-/* Everything ahead of each band's boundary (--wipeN) is still inked; everything behind
-   it has been wiped away. The boundary is not one clean line: nine hard-edged strands
-   of ink trail behind it at uneven widths and spacings, graded from almost-solid right
+/* Each band's wiper blade pivots at a fixed corner and sweeps in an arc rather than
+   travelling in a straight line, so the erase boundary genuinely curves as it moves
+   across the shape instead of just tilting a flat edge (compare the earlier
+   linear-gradient version, which read as a straight diagonal wipe no matter the angle).
+   Bands 0 and 2 pivot at the bottom-left of their own third and start pointing straight
+   up, sweeping clockwise; band 1 pivots at the bottom-right and starts pointing left,
+   also sweeping clockwise -- the mirrored pivot is what makes the middle pass read as
+   the opposite direction from the two around it. --wipeN is simply how far each blade
+   has swung, in degrees: 90deg exactly covers that corner's interior right angle (i.e.
+   the whole band), and it travels to 100deg so the last few degrees of overshoot carry
+   the trailing dry-brush strands (below) past the edge the same way the old --wipe's
+   extra 8% did. The boundary is not one clean line: nine hard-edged strands of ink
+   trail behind it at uneven angular widths and spacings, graded from almost-solid right
    at the edge down to barely-there furthest back, so the edge frays and thins like a
-   dry brush (kasure) instead of cutting straight across.
+   dry brush (kasure) instead of cutting a crisp arc.
 
    The 3 layers below are the top/middle/bottom bands: mask-size restricts each to a
    third of the box's height and mask-position stacks them in order (0%/50%/100%), and
    since they never overlap, the browser's default layer compositing just shows each
    layer's own third untouched by the others -- no mask-composite tuning needed, and no
-   clip-path either. That matters because clip-path was the earlier approach (each band
-   as its own clipped element) and it silently broke: a plain <g>'s mask-size percentage
-   resolves against its content bounding box, which -- with 4 differently-shaped variants
-   stacked inside for the pattern-cycling feature -- includes all 4 combined, not just
-   the visible one. 100% ended up meaning far more distance than the visible shape
-   actually spans, so satellites on the trailing edge never finished clearing no matter
-   how high --wipe went (verified up into the thousands of percent -- it never recovered).
-   Applying the mask here instead, directly on .corner-splash (a real <svg> with explicit
-   width/height, not content-bbox-dependent), sidesteps that reference-box ambiguity
-   entirely, so the original --wipe travelling 0% -> 108% is correct again. */
+   clip-path either (clip-path was an earlier, abandoned approach -- see git history).
+   Applying the mask here, directly on .corner-splash (a real <svg> with explicit
+   width/height, not content-bbox-dependent), keeps mask-size unambiguous. */
 .corner-splash {
   position: absolute;
   z-index: 0;
   pointer-events: none;
-  --wipe0: 0%;
-  --wipe1: 0%;
-  --wipe2: 0%;
-  --wipe-angle0: 60deg;
-  --wipe-angle1: 240deg;
-  --wipe-angle2: 60deg;
-  --ink-wipe-mask-0: linear-gradient(
-    var(--wipe-angle0),
-    transparent 0%,
-    transparent calc(var(--wipe0) - 6.6%),
-    rgba(255, 255, 255, 0.08) calc(var(--wipe0) - 6.6%),
-    rgba(255, 255, 255, 0.08) calc(var(--wipe0) - 6.3%),
-    transparent calc(var(--wipe0) - 6.3%),
-    transparent calc(var(--wipe0) - 5.7%),
-    rgba(255, 255, 255, 0.12) calc(var(--wipe0) - 5.7%),
-    rgba(255, 255, 255, 0.12) calc(var(--wipe0) - 5.5%),
-    transparent calc(var(--wipe0) - 5.5%),
-    transparent calc(var(--wipe0) - 5%),
-    rgba(255, 255, 255, 0.18) calc(var(--wipe0) - 5%),
-    rgba(255, 255, 255, 0.18) calc(var(--wipe0) - 4.4%),
-    transparent calc(var(--wipe0) - 4.4%),
-    transparent calc(var(--wipe0) - 4%),
-    rgba(255, 255, 255, 0.14) calc(var(--wipe0) - 4%),
-    rgba(255, 255, 255, 0.14) calc(var(--wipe0) - 3.8%),
-    transparent calc(var(--wipe0) - 3.8%),
-    transparent calc(var(--wipe0) - 3.5%),
-    rgba(255, 255, 255, 0.34) calc(var(--wipe0) - 3.5%),
-    rgba(255, 255, 255, 0.34) calc(var(--wipe0) - 2.9%),
-    transparent calc(var(--wipe0) - 2.9%),
-    transparent calc(var(--wipe0) - 2.6%),
-    rgba(255, 255, 255, 0.22) calc(var(--wipe0) - 2.6%),
-    rgba(255, 255, 255, 0.22) calc(var(--wipe0) - 2.4%),
-    transparent calc(var(--wipe0) - 2.4%),
-    transparent calc(var(--wipe0) - 2.1%),
-    rgba(255, 255, 255, 0.5) calc(var(--wipe0) - 2.1%),
-    rgba(255, 255, 255, 0.5) calc(var(--wipe0) - 1.5%),
-    transparent calc(var(--wipe0) - 1.5%),
-    transparent calc(var(--wipe0) - 1.3%),
-    rgba(255, 255, 255, 0.38) calc(var(--wipe0) - 1.3%),
-    rgba(255, 255, 255, 0.38) calc(var(--wipe0) - 1.1%),
-    transparent calc(var(--wipe0) - 1.1%),
-    transparent calc(var(--wipe0) - 0.9%),
-    rgba(255, 255, 255, 0.68) calc(var(--wipe0) - 0.9%),
-    rgba(255, 255, 255, 0.68) calc(var(--wipe0) - 0.4%),
-    transparent calc(var(--wipe0) - 0.4%),
-    transparent calc(var(--wipe0) - 0.2%),
-    #fff calc(var(--wipe0) - 0.2%),
-    #fff 100%
+  --wipe0: 0deg;
+  --wipe1: 0deg;
+  --wipe2: 0deg;
+  --ink-wipe-mask-0: conic-gradient(
+    from 0deg at 0% 100%,
+    transparent 0deg,
+    transparent calc(var(--wipe0) - 6.6deg),
+    rgba(255, 255, 255, 0.08) calc(var(--wipe0) - 6.6deg),
+    rgba(255, 255, 255, 0.08) calc(var(--wipe0) - 6.3deg),
+    transparent calc(var(--wipe0) - 6.3deg),
+    transparent calc(var(--wipe0) - 5.7deg),
+    rgba(255, 255, 255, 0.12) calc(var(--wipe0) - 5.7deg),
+    rgba(255, 255, 255, 0.12) calc(var(--wipe0) - 5.5deg),
+    transparent calc(var(--wipe0) - 5.5deg),
+    transparent calc(var(--wipe0) - 5deg),
+    rgba(255, 255, 255, 0.18) calc(var(--wipe0) - 5deg),
+    rgba(255, 255, 255, 0.18) calc(var(--wipe0) - 4.4deg),
+    transparent calc(var(--wipe0) - 4.4deg),
+    transparent calc(var(--wipe0) - 4deg),
+    rgba(255, 255, 255, 0.14) calc(var(--wipe0) - 4deg),
+    rgba(255, 255, 255, 0.14) calc(var(--wipe0) - 3.8deg),
+    transparent calc(var(--wipe0) - 3.8deg),
+    transparent calc(var(--wipe0) - 3.5deg),
+    rgba(255, 255, 255, 0.34) calc(var(--wipe0) - 3.5deg),
+    rgba(255, 255, 255, 0.34) calc(var(--wipe0) - 2.9deg),
+    transparent calc(var(--wipe0) - 2.9deg),
+    transparent calc(var(--wipe0) - 2.6deg),
+    rgba(255, 255, 255, 0.22) calc(var(--wipe0) - 2.6deg),
+    rgba(255, 255, 255, 0.22) calc(var(--wipe0) - 2.4deg),
+    transparent calc(var(--wipe0) - 2.4deg),
+    transparent calc(var(--wipe0) - 2.1deg),
+    rgba(255, 255, 255, 0.5) calc(var(--wipe0) - 2.1deg),
+    rgba(255, 255, 255, 0.5) calc(var(--wipe0) - 1.5deg),
+    transparent calc(var(--wipe0) - 1.5deg),
+    transparent calc(var(--wipe0) - 1.3deg),
+    rgba(255, 255, 255, 0.38) calc(var(--wipe0) - 1.3deg),
+    rgba(255, 255, 255, 0.38) calc(var(--wipe0) - 1.1deg),
+    transparent calc(var(--wipe0) - 1.1deg),
+    transparent calc(var(--wipe0) - 0.9deg),
+    rgba(255, 255, 255, 0.68) calc(var(--wipe0) - 0.9deg),
+    rgba(255, 255, 255, 0.68) calc(var(--wipe0) - 0.4deg),
+    transparent calc(var(--wipe0) - 0.4deg),
+    transparent calc(var(--wipe0) - 0.2deg),
+    #fff calc(var(--wipe0) - 0.2deg),
+    #fff 360deg
   );
-  --ink-wipe-mask-1: linear-gradient(
-    var(--wipe-angle1),
-    transparent 0%,
-    transparent calc(var(--wipe1) - 6.6%),
-    rgba(255, 255, 255, 0.08) calc(var(--wipe1) - 6.6%),
-    rgba(255, 255, 255, 0.08) calc(var(--wipe1) - 6.3%),
-    transparent calc(var(--wipe1) - 6.3%),
-    transparent calc(var(--wipe1) - 5.7%),
-    rgba(255, 255, 255, 0.12) calc(var(--wipe1) - 5.7%),
-    rgba(255, 255, 255, 0.12) calc(var(--wipe1) - 5.5%),
-    transparent calc(var(--wipe1) - 5.5%),
-    transparent calc(var(--wipe1) - 5%),
-    rgba(255, 255, 255, 0.18) calc(var(--wipe1) - 5%),
-    rgba(255, 255, 255, 0.18) calc(var(--wipe1) - 4.4%),
-    transparent calc(var(--wipe1) - 4.4%),
-    transparent calc(var(--wipe1) - 4%),
-    rgba(255, 255, 255, 0.14) calc(var(--wipe1) - 4%),
-    rgba(255, 255, 255, 0.14) calc(var(--wipe1) - 3.8%),
-    transparent calc(var(--wipe1) - 3.8%),
-    transparent calc(var(--wipe1) - 3.5%),
-    rgba(255, 255, 255, 0.34) calc(var(--wipe1) - 3.5%),
-    rgba(255, 255, 255, 0.34) calc(var(--wipe1) - 2.9%),
-    transparent calc(var(--wipe1) - 2.9%),
-    transparent calc(var(--wipe1) - 2.6%),
-    rgba(255, 255, 255, 0.22) calc(var(--wipe1) - 2.6%),
-    rgba(255, 255, 255, 0.22) calc(var(--wipe1) - 2.4%),
-    transparent calc(var(--wipe1) - 2.4%),
-    transparent calc(var(--wipe1) - 2.1%),
-    rgba(255, 255, 255, 0.5) calc(var(--wipe1) - 2.1%),
-    rgba(255, 255, 255, 0.5) calc(var(--wipe1) - 1.5%),
-    transparent calc(var(--wipe1) - 1.5%),
-    transparent calc(var(--wipe1) - 1.3%),
-    rgba(255, 255, 255, 0.38) calc(var(--wipe1) - 1.3%),
-    rgba(255, 255, 255, 0.38) calc(var(--wipe1) - 1.1%),
-    transparent calc(var(--wipe1) - 1.1%),
-    transparent calc(var(--wipe1) - 0.9%),
-    rgba(255, 255, 255, 0.68) calc(var(--wipe1) - 0.9%),
-    rgba(255, 255, 255, 0.68) calc(var(--wipe1) - 0.4%),
-    transparent calc(var(--wipe1) - 0.4%),
-    transparent calc(var(--wipe1) - 0.2%),
-    #fff calc(var(--wipe1) - 0.2%),
-    #fff 100%
+  --ink-wipe-mask-1: conic-gradient(
+    from -90deg at 100% 100%,
+    transparent 0deg,
+    transparent calc(var(--wipe1) - 6.6deg),
+    rgba(255, 255, 255, 0.08) calc(var(--wipe1) - 6.6deg),
+    rgba(255, 255, 255, 0.08) calc(var(--wipe1) - 6.3deg),
+    transparent calc(var(--wipe1) - 6.3deg),
+    transparent calc(var(--wipe1) - 5.7deg),
+    rgba(255, 255, 255, 0.12) calc(var(--wipe1) - 5.7deg),
+    rgba(255, 255, 255, 0.12) calc(var(--wipe1) - 5.5deg),
+    transparent calc(var(--wipe1) - 5.5deg),
+    transparent calc(var(--wipe1) - 5deg),
+    rgba(255, 255, 255, 0.18) calc(var(--wipe1) - 5deg),
+    rgba(255, 255, 255, 0.18) calc(var(--wipe1) - 4.4deg),
+    transparent calc(var(--wipe1) - 4.4deg),
+    transparent calc(var(--wipe1) - 4deg),
+    rgba(255, 255, 255, 0.14) calc(var(--wipe1) - 4deg),
+    rgba(255, 255, 255, 0.14) calc(var(--wipe1) - 3.8deg),
+    transparent calc(var(--wipe1) - 3.8deg),
+    transparent calc(var(--wipe1) - 3.5deg),
+    rgba(255, 255, 255, 0.34) calc(var(--wipe1) - 3.5deg),
+    rgba(255, 255, 255, 0.34) calc(var(--wipe1) - 2.9deg),
+    transparent calc(var(--wipe1) - 2.9deg),
+    transparent calc(var(--wipe1) - 2.6deg),
+    rgba(255, 255, 255, 0.22) calc(var(--wipe1) - 2.6deg),
+    rgba(255, 255, 255, 0.22) calc(var(--wipe1) - 2.4deg),
+    transparent calc(var(--wipe1) - 2.4deg),
+    transparent calc(var(--wipe1) - 2.1deg),
+    rgba(255, 255, 255, 0.5) calc(var(--wipe1) - 2.1deg),
+    rgba(255, 255, 255, 0.5) calc(var(--wipe1) - 1.5deg),
+    transparent calc(var(--wipe1) - 1.5deg),
+    transparent calc(var(--wipe1) - 1.3deg),
+    rgba(255, 255, 255, 0.38) calc(var(--wipe1) - 1.3deg),
+    rgba(255, 255, 255, 0.38) calc(var(--wipe1) - 1.1deg),
+    transparent calc(var(--wipe1) - 1.1deg),
+    transparent calc(var(--wipe1) - 0.9deg),
+    rgba(255, 255, 255, 0.68) calc(var(--wipe1) - 0.9deg),
+    rgba(255, 255, 255, 0.68) calc(var(--wipe1) - 0.4deg),
+    transparent calc(var(--wipe1) - 0.4deg),
+    transparent calc(var(--wipe1) - 0.2deg),
+    #fff calc(var(--wipe1) - 0.2deg),
+    #fff 360deg
   );
-  --ink-wipe-mask-2: linear-gradient(
-    var(--wipe-angle2),
-    transparent 0%,
-    transparent calc(var(--wipe2) - 6.6%),
-    rgba(255, 255, 255, 0.08) calc(var(--wipe2) - 6.6%),
-    rgba(255, 255, 255, 0.08) calc(var(--wipe2) - 6.3%),
-    transparent calc(var(--wipe2) - 6.3%),
-    transparent calc(var(--wipe2) - 5.7%),
-    rgba(255, 255, 255, 0.12) calc(var(--wipe2) - 5.7%),
-    rgba(255, 255, 255, 0.12) calc(var(--wipe2) - 5.5%),
-    transparent calc(var(--wipe2) - 5.5%),
-    transparent calc(var(--wipe2) - 5%),
-    rgba(255, 255, 255, 0.18) calc(var(--wipe2) - 5%),
-    rgba(255, 255, 255, 0.18) calc(var(--wipe2) - 4.4%),
-    transparent calc(var(--wipe2) - 4.4%),
-    transparent calc(var(--wipe2) - 4%),
-    rgba(255, 255, 255, 0.14) calc(var(--wipe2) - 4%),
-    rgba(255, 255, 255, 0.14) calc(var(--wipe2) - 3.8%),
-    transparent calc(var(--wipe2) - 3.8%),
-    transparent calc(var(--wipe2) - 3.5%),
-    rgba(255, 255, 255, 0.34) calc(var(--wipe2) - 3.5%),
-    rgba(255, 255, 255, 0.34) calc(var(--wipe2) - 2.9%),
-    transparent calc(var(--wipe2) - 2.9%),
-    transparent calc(var(--wipe2) - 2.6%),
-    rgba(255, 255, 255, 0.22) calc(var(--wipe2) - 2.6%),
-    rgba(255, 255, 255, 0.22) calc(var(--wipe2) - 2.4%),
-    transparent calc(var(--wipe2) - 2.4%),
-    transparent calc(var(--wipe2) - 2.1%),
-    rgba(255, 255, 255, 0.5) calc(var(--wipe2) - 2.1%),
-    rgba(255, 255, 255, 0.5) calc(var(--wipe2) - 1.5%),
-    transparent calc(var(--wipe2) - 1.5%),
-    transparent calc(var(--wipe2) - 1.3%),
-    rgba(255, 255, 255, 0.38) calc(var(--wipe2) - 1.3%),
-    rgba(255, 255, 255, 0.38) calc(var(--wipe2) - 1.1%),
-    transparent calc(var(--wipe2) - 1.1%),
-    transparent calc(var(--wipe2) - 0.9%),
-    rgba(255, 255, 255, 0.68) calc(var(--wipe2) - 0.9%),
-    rgba(255, 255, 255, 0.68) calc(var(--wipe2) - 0.4%),
-    transparent calc(var(--wipe2) - 0.4%),
-    transparent calc(var(--wipe2) - 0.2%),
-    #fff calc(var(--wipe2) - 0.2%),
-    #fff 100%
+  --ink-wipe-mask-2: conic-gradient(
+    from 0deg at 0% 100%,
+    transparent 0deg,
+    transparent calc(var(--wipe2) - 6.6deg),
+    rgba(255, 255, 255, 0.08) calc(var(--wipe2) - 6.6deg),
+    rgba(255, 255, 255, 0.08) calc(var(--wipe2) - 6.3deg),
+    transparent calc(var(--wipe2) - 6.3deg),
+    transparent calc(var(--wipe2) - 5.7deg),
+    rgba(255, 255, 255, 0.12) calc(var(--wipe2) - 5.7deg),
+    rgba(255, 255, 255, 0.12) calc(var(--wipe2) - 5.5deg),
+    transparent calc(var(--wipe2) - 5.5deg),
+    transparent calc(var(--wipe2) - 5deg),
+    rgba(255, 255, 255, 0.18) calc(var(--wipe2) - 5deg),
+    rgba(255, 255, 255, 0.18) calc(var(--wipe2) - 4.4deg),
+    transparent calc(var(--wipe2) - 4.4deg),
+    transparent calc(var(--wipe2) - 4deg),
+    rgba(255, 255, 255, 0.14) calc(var(--wipe2) - 4deg),
+    rgba(255, 255, 255, 0.14) calc(var(--wipe2) - 3.8deg),
+    transparent calc(var(--wipe2) - 3.8deg),
+    transparent calc(var(--wipe2) - 3.5deg),
+    rgba(255, 255, 255, 0.34) calc(var(--wipe2) - 3.5deg),
+    rgba(255, 255, 255, 0.34) calc(var(--wipe2) - 2.9deg),
+    transparent calc(var(--wipe2) - 2.9deg),
+    transparent calc(var(--wipe2) - 2.6deg),
+    rgba(255, 255, 255, 0.22) calc(var(--wipe2) - 2.6deg),
+    rgba(255, 255, 255, 0.22) calc(var(--wipe2) - 2.4deg),
+    transparent calc(var(--wipe2) - 2.4deg),
+    transparent calc(var(--wipe2) - 2.1deg),
+    rgba(255, 255, 255, 0.5) calc(var(--wipe2) - 2.1deg),
+    rgba(255, 255, 255, 0.5) calc(var(--wipe2) - 1.5deg),
+    transparent calc(var(--wipe2) - 1.5deg),
+    transparent calc(var(--wipe2) - 1.3deg),
+    rgba(255, 255, 255, 0.38) calc(var(--wipe2) - 1.3deg),
+    rgba(255, 255, 255, 0.38) calc(var(--wipe2) - 1.1deg),
+    transparent calc(var(--wipe2) - 1.1deg),
+    transparent calc(var(--wipe2) - 0.9deg),
+    rgba(255, 255, 255, 0.68) calc(var(--wipe2) - 0.9deg),
+    rgba(255, 255, 255, 0.68) calc(var(--wipe2) - 0.4deg),
+    transparent calc(var(--wipe2) - 0.4deg),
+    transparent calc(var(--wipe2) - 0.2deg),
+    #fff calc(var(--wipe2) - 0.2deg),
+    #fff 360deg
   );
   -webkit-mask-repeat: no-repeat, no-repeat, no-repeat;
   mask-repeat: no-repeat, no-repeat, no-repeat;
@@ -338,7 +324,6 @@ ul {
   -webkit-mask-image: var(--ink-wipe-mask-0), var(--ink-wipe-mask-1), var(--ink-wipe-mask-2);
   mask-image: var(--ink-wipe-mask-0), var(--ink-wipe-mask-1), var(--ink-wipe-mask-2);
 }
-
 
 .corner-splash--about {
   bottom: -140px;
@@ -545,7 +530,7 @@ ul {
   .corner-splash {
     /* Four ink lifetimes per cycle (pattern changes each time), 5.9s each. ink-cycle-diagonal
        drives the shared envelope (splat-in, hold, fade-out); ink-wipe-0/1/2 each drive one
-       band's own --wipeN/--wipe-angleN independently, all on this same element now that the
+       band's own --wipeN independently, all on this same element now that the
        mask lives here directly (see .corner-splash above). */
     animation:
       ink-cycle-diagonal 23.6s ease-in-out infinite,
@@ -628,26 +613,24 @@ ul {
    child (see .ink-splash-slot below) so the pattern changes every time the ink
    reappears. ink-cycle-diagonal only handles the shared envelope (splat-in, hold,
    fade-out) for the whole splash; the actual erasing is delegated to the 3 ink-wipe-N
-   keyframes below, one per horizontal band (see the 3-layer mask on .corner-splash).
-   Within a lifetime's wipe window the bands fire top to bottom, alternating direction
-   each time (band0 left-to-right, band1 right-to-left, band2 left-to-right again), so a
-   single erase reads as 3 passes moving left-right-left while working down the shape.
-   Each pass starts before the one above it has quite finished -- the windows overlap by
-   about a quarter -- so the boundary hands off from the end of one pass to the start of
-   the next and the three read as one continuous serpentine stroke rather than three
-   slabs blinking out in turn. Every wipe is monotonic -- the brush only ever moves
-   forward, so already-cleared ink never comes back and the shape does not flicker.
-   Each --wipeN travels 0% -> 108%: the extra 8% is what carries the trailing dry-brush
-   strands (see .corner-splash) off the far edge.
+   keyframes below, one per band's --wipeN (see the conic-gradient mask on
+   .corner-splash for what the angle actually draws). Within a lifetime's wipe window
+   the bands fire top to bottom -- each pass starts before the one above it has quite
+   finished (the windows overlap by a quarter), so the arc hands off from the end of
+   one pass to the start of the next and the three read as one continuous curved
+   stroke working down the shape rather than three arcs blinking out in turn. Every
+   wipe is monotonic -- the blade only ever swings forward, so already-cleared ink
+   never comes back and the shape does not flicker. Each --wipeN travels 0deg -> 100deg:
+   90deg exactly covers its corner's right angle (the whole band), and the extra 10deg
+   carries the trailing dry-brush strands (see .corner-splash) past the edge.
 
-   The wipe itself now runs longer (8 of the lifetime's 25 points, versus 5 before) so
-   the sweep reads as a smooth, unhurried motion instead of a quick flick; the hold
-   before it and the blank pause after are both shorter to make room, so the whole
-   lifetime is still the same 5.9s. Once the shape is fully wiped and faded, the blank
-   gap before the next lifetime's ink splats back in is now only about 0.085s (24.95%
-   to 25%, i.e. right up to the wrap) -- down from roughly 0.3s -- so the reappearance
-   feels quick without the reset ever being visible (it happens while fully
-   transparent, same as before). */
+   The wipe now runs faster than the last pass at this (6 of the lifetime's 25 points,
+   versus 8 before -- back below the original 5, but now an arc instead of a straight
+   line, which reads as smoother motion despite the extra speed). The freed time goes
+   to the hold beforehand (15 points, up from 13) rather than the blank pause after,
+   which stays short: about 0.085s (24.95% to 25%, i.e. right up to the wrap) from the
+   ink fully fading to the next lifetime's ink splatting back in -- the reset itself
+   still happens while fully transparent, so it is never seen. */
 @keyframes ink-cycle-diagonal {
   /* --- lifetime 1 --- */
   0% {
@@ -663,7 +646,7 @@ ul {
     transform: scale(1);
     animation-timing-function: linear;
   }
-  14.75% {
+  16.75% {
     opacity: 1;
     transform: scale(1);
     animation-timing-function: linear;
@@ -695,7 +678,7 @@ ul {
     transform: scale(1);
     animation-timing-function: linear;
   }
-  39.75% {
+  41.75% {
     opacity: 1;
     transform: scale(1);
     animation-timing-function: linear;
@@ -727,7 +710,7 @@ ul {
     transform: scale(1);
     animation-timing-function: linear;
   }
-  64.75% {
+  66.75% {
     opacity: 1;
     transform: scale(1);
     animation-timing-function: linear;
@@ -759,7 +742,7 @@ ul {
     transform: scale(1);
     animation-timing-function: linear;
   }
-  89.75% {
+  91.75% {
     opacity: 1;
     transform: scale(1);
     animation-timing-function: linear;
@@ -781,236 +764,189 @@ ul {
 @keyframes ink-wipe-0 {
   /* --- lifetime 1 --- */
   0% {
-    --wipe0: 0%;
-    --wipe-angle0: 60deg;
+    --wipe0: 0deg;
   }
-  14.75% {
-    --wipe0: 0%;
-    --wipe-angle0: 60deg;
+  16.75% {
+    --wipe0: 0deg;
     animation-timing-function: ease-in-out;
   }
-  17.95% {
-    --wipe0: 108%;
-    --wipe-angle0: 60deg;
+  19.15% {
+    --wipe0: 100deg;
   }
   24.95% {
-    --wipe0: 108%;
-    --wipe-angle0: 60deg;
+    --wipe0: 100deg;
   }
 
   /* --- lifetime 2 --- */
   25% {
-    --wipe0: 0%;
-    --wipe-angle0: 60deg;
+    --wipe0: 0deg;
   }
-  39.75% {
-    --wipe0: 0%;
-    --wipe-angle0: 60deg;
+  41.75% {
+    --wipe0: 0deg;
     animation-timing-function: ease-in-out;
   }
-  42.95% {
-    --wipe0: 108%;
-    --wipe-angle0: 60deg;
+  44.15% {
+    --wipe0: 100deg;
   }
   49.95% {
-    --wipe0: 108%;
-    --wipe-angle0: 60deg;
+    --wipe0: 100deg;
   }
 
   /* --- lifetime 3 --- */
   50% {
-    --wipe0: 0%;
-    --wipe-angle0: 60deg;
+    --wipe0: 0deg;
   }
-  64.75% {
-    --wipe0: 0%;
-    --wipe-angle0: 60deg;
+  66.75% {
+    --wipe0: 0deg;
     animation-timing-function: ease-in-out;
   }
-  67.95% {
-    --wipe0: 108%;
-    --wipe-angle0: 60deg;
+  69.15% {
+    --wipe0: 100deg;
   }
   74.95% {
-    --wipe0: 108%;
-    --wipe-angle0: 60deg;
+    --wipe0: 100deg;
   }
 
   /* --- lifetime 4 --- */
   75% {
-    --wipe0: 0%;
-    --wipe-angle0: 60deg;
+    --wipe0: 0deg;
   }
-  89.75% {
-    --wipe0: 0%;
-    --wipe-angle0: 60deg;
+  91.75% {
+    --wipe0: 0deg;
     animation-timing-function: ease-in-out;
   }
-  92.95% {
-    --wipe0: 108%;
-    --wipe-angle0: 60deg;
+  94.15% {
+    --wipe0: 100deg;
   }
   100% {
-    --wipe0: 108%;
-    --wipe-angle0: 60deg;
+    --wipe0: 100deg;
   }
 }
 
 @keyframes ink-wipe-1 {
   /* --- lifetime 1 --- */
   0% {
-    --wipe1: 0%;
-    --wipe-angle1: 240deg;
+    --wipe1: 0deg;
   }
-  17.15% {
-    --wipe1: 0%;
-    --wipe-angle1: 240deg;
+  18.55% {
+    --wipe1: 0deg;
     animation-timing-function: ease-in-out;
   }
-  20.35% {
-    --wipe1: 108%;
-    --wipe-angle1: 240deg;
+  20.95% {
+    --wipe1: 100deg;
   }
   24.95% {
-    --wipe1: 108%;
-    --wipe-angle1: 240deg;
+    --wipe1: 100deg;
   }
 
   /* --- lifetime 2 --- */
   25% {
-    --wipe1: 0%;
-    --wipe-angle1: 240deg;
+    --wipe1: 0deg;
   }
-  42.15% {
-    --wipe1: 0%;
-    --wipe-angle1: 240deg;
+  43.55% {
+    --wipe1: 0deg;
     animation-timing-function: ease-in-out;
   }
-  45.35% {
-    --wipe1: 108%;
-    --wipe-angle1: 240deg;
+  45.95% {
+    --wipe1: 100deg;
   }
   49.95% {
-    --wipe1: 108%;
-    --wipe-angle1: 240deg;
+    --wipe1: 100deg;
   }
 
   /* --- lifetime 3 --- */
   50% {
-    --wipe1: 0%;
-    --wipe-angle1: 240deg;
+    --wipe1: 0deg;
   }
-  67.15% {
-    --wipe1: 0%;
-    --wipe-angle1: 240deg;
+  68.55% {
+    --wipe1: 0deg;
     animation-timing-function: ease-in-out;
   }
-  70.35% {
-    --wipe1: 108%;
-    --wipe-angle1: 240deg;
+  70.95% {
+    --wipe1: 100deg;
   }
   74.95% {
-    --wipe1: 108%;
-    --wipe-angle1: 240deg;
+    --wipe1: 100deg;
   }
 
   /* --- lifetime 4 --- */
   75% {
-    --wipe1: 0%;
-    --wipe-angle1: 240deg;
+    --wipe1: 0deg;
   }
-  92.15% {
-    --wipe1: 0%;
-    --wipe-angle1: 240deg;
+  93.55% {
+    --wipe1: 0deg;
     animation-timing-function: ease-in-out;
   }
-  95.35% {
-    --wipe1: 108%;
-    --wipe-angle1: 240deg;
+  95.95% {
+    --wipe1: 100deg;
   }
   100% {
-    --wipe1: 108%;
-    --wipe-angle1: 240deg;
+    --wipe1: 100deg;
   }
 }
 
 @keyframes ink-wipe-2 {
   /* --- lifetime 1 --- */
   0% {
-    --wipe2: 0%;
-    --wipe-angle2: 60deg;
+    --wipe2: 0deg;
   }
-  19.55% {
-    --wipe2: 0%;
-    --wipe-angle2: 60deg;
+  20.35% {
+    --wipe2: 0deg;
     animation-timing-function: ease-in-out;
   }
   22.75% {
-    --wipe2: 108%;
-    --wipe-angle2: 60deg;
+    --wipe2: 100deg;
   }
   24.95% {
-    --wipe2: 108%;
-    --wipe-angle2: 60deg;
+    --wipe2: 100deg;
   }
 
   /* --- lifetime 2 --- */
   25% {
-    --wipe2: 0%;
-    --wipe-angle2: 60deg;
+    --wipe2: 0deg;
   }
-  44.55% {
-    --wipe2: 0%;
-    --wipe-angle2: 60deg;
+  45.35% {
+    --wipe2: 0deg;
     animation-timing-function: ease-in-out;
   }
   47.75% {
-    --wipe2: 108%;
-    --wipe-angle2: 60deg;
+    --wipe2: 100deg;
   }
   49.95% {
-    --wipe2: 108%;
-    --wipe-angle2: 60deg;
+    --wipe2: 100deg;
   }
 
   /* --- lifetime 3 --- */
   50% {
-    --wipe2: 0%;
-    --wipe-angle2: 60deg;
+    --wipe2: 0deg;
   }
-  69.55% {
-    --wipe2: 0%;
-    --wipe-angle2: 60deg;
+  70.35% {
+    --wipe2: 0deg;
     animation-timing-function: ease-in-out;
   }
   72.75% {
-    --wipe2: 108%;
-    --wipe-angle2: 60deg;
+    --wipe2: 100deg;
   }
   74.95% {
-    --wipe2: 108%;
-    --wipe-angle2: 60deg;
+    --wipe2: 100deg;
   }
 
   /* --- lifetime 4 --- */
   75% {
-    --wipe2: 0%;
-    --wipe-angle2: 60deg;
+    --wipe2: 0deg;
   }
-  94.55% {
-    --wipe2: 0%;
-    --wipe-angle2: 60deg;
+  95.35% {
+    --wipe2: 0deg;
     animation-timing-function: ease-in-out;
   }
   97.75% {
-    --wipe2: 108%;
-    --wipe-angle2: 60deg;
+    --wipe2: 100deg;
   }
   100% {
-    --wipe2: 108%;
-    --wipe-angle2: 60deg;
+    --wipe2: 100deg;
   }
 }
+
 
 /* One keyframes block per slot: each holds opacity 1 for exactly the quarter of the
    cycle its matching ink-cycle-diagonal lifetime owns, 0 otherwise, switching at the
