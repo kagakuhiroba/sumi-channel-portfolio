@@ -1024,9 +1024,9 @@ ul {
 }
 
 .hero__title {
-  font-family: 'Yuji Syuku', cursive;
+  font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic', sans-serif;
   font-size: clamp(3.4rem, 11vw, 7.5rem);
-  font-weight: 400;
+  font-weight: 700;
   letter-spacing: 0.02em;
   line-height: 1.15;
 }
